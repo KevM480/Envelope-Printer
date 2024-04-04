@@ -15,7 +15,7 @@ public class JPreviewSettingsPanel extends JPanel {
 		this.setLayout(layout);
 		this.setPreferredSize(new Dimension(410, 120));
 		Border border = BorderFactory.createLineBorder(getForeground());
-		TitledBorder titledBorder = new TitledBorder(border, "Previews", TitledBorder.CENTER, TitledBorder.BOTTOM);
+		TitledBorder titledBorder = new TitledBorder(border, "Preview", TitledBorder.CENTER, TitledBorder.BOTTOM);
 		this.setBorder(titledBorder);
 
 	}

@@ -12,8 +12,10 @@ import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.kevinm.envelopeprinter.ui.controls.JAddressBookPane;
 import com.kevinm.envelopeprinter.ui.controls.JAddresseeFormPanel;
-import com.kevinm.envelopeprinter.ui.controls.JFontPanel;
+import com.kevinm.envelopeprinter.ui.controls.JPreviewPanel;
 import com.kevinm.envelopeprinter.ui.controls.JTopMenuBar;
+import com.kevinm.envelopeprinter.ui.controls.settings.JFontSettingsPanel;
+import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 
 public class EnvlopePrinterWindow extends JFrame {
 
@@ -32,24 +34,35 @@ public class EnvlopePrinterWindow extends JFrame {
 		height = (int) screenSize.getHeight();
 		this.setSize(width, height);
 		Container contentPane = this.getContentPane();
-		final JFontPanel settingTools = new JFontPanel();
-		layout.putConstraint(SpringLayout.WEST, settingTools, 0, SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.NORTH, settingTools, 0, SpringLayout.NORTH, contentPane);
-		contentPane.add(settingTools);
+		final JFontSettingsPanel fontSettings = new JFontSettingsPanel();
+		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
+		contentPane.add(fontSettings);
+		final JPreviewSettingsPanel previewSettings = new JPreviewSettingsPanel();
+		layout.putConstraint(SpringLayout.WEST, previewSettings, 0, SpringLayout.EAST, fontSettings);
+		layout.putConstraint(SpringLayout.NORTH, previewSettings, 0, SpringLayout.NORTH, contentPane);
+		contentPane.add(previewSettings);
+
 		final JAddressBookPane addressPane = new JAddressBookPane();
 		final JAddresseeFormPanel formPanel = new JAddresseeFormPanel();
+		final JPreviewPanel previewPanel = new JPreviewPanel();
 
-		layout.putConstraint(SpringLayout.NORTH, formPanel, 0, SpringLayout.SOUTH, settingTools);
+		layout.putConstraint(SpringLayout.NORTH, formPanel, 0, SpringLayout.SOUTH, fontSettings);
 		layout.putConstraint(SpringLayout.EAST, formPanel, -3, SpringLayout.EAST, contentPane);
 		layout.putConstraint(SpringLayout.SOUTH, formPanel, -3, SpringLayout.SOUTH, contentPane);
 
-		layout.putConstraint(SpringLayout.NORTH, addressPane, 0, SpringLayout.SOUTH, settingTools);
+		layout.putConstraint(SpringLayout.NORTH, addressPane, 0, SpringLayout.SOUTH, fontSettings);
 		layout.putConstraint(SpringLayout.WEST, addressPane, 3, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.EAST, addressPane, -3, SpringLayout.WEST, formPanel);
-		layout.putConstraint(SpringLayout.SOUTH, addressPane, -3, SpringLayout.SOUTH, contentPane);
+		layout.putConstraint(SpringLayout.SOUTH, addressPane, -3, SpringLayout.NORTH, previewPanel);
+
+		layout.putConstraint(SpringLayout.WEST, previewPanel, 3, SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.EAST, previewPanel, -3, SpringLayout.WEST, formPanel);
+		layout.putConstraint(SpringLayout.SOUTH, previewPanel, -3, SpringLayout.SOUTH, contentPane);
 
 		contentPane.add(formPanel);
 		contentPane.add(addressPane);
+		contentPane.add(previewPanel);
 
 		/*
 		 * JLabel label = new JLabel("Label: ");
