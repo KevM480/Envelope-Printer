@@ -1,4 +1,4 @@
-package com.kevinm.envelopeprinter.ui.controls;
+package com.kevinm.envelopeprinter.ui.controls.settings;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,10 +17,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-public class JFontPanel extends JPanel {
+import com.kevinm.envelopeprinter.ui.controls.JColorSelectorButton;
+import com.kevinm.envelopeprinter.ui.controls.JFontComboBox;
+
+public class JFontSettingsPanel extends JPanel {
 	private final static Integer[] FONT_SIZES = new Integer[] { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28 };
 
-	public JFontPanel() {
+	public JFontSettingsPanel() {
 		SpringLayout layout = new SpringLayout();
 		this.setLayout(layout);
 		this.setPreferredSize(new Dimension(410, 120));
@@ -88,7 +91,7 @@ public class JFontPanel extends JPanel {
 		color.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color newColor = JColorChooser.showDialog(JFontPanel.this, "Choose Background Color", Color.BLACK);
+				Color newColor = JColorChooser.showDialog(JFontSettingsPanel.this, "Choose Background Color", Color.BLACK);
 				color.setForeground(newColor);
 			}
 		});
