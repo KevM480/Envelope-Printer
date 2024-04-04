@@ -2,7 +2,6 @@ package com.kevinm.envelopeprinter.ui.controls;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -49,18 +48,11 @@ public class JAddressBookPane extends JScrollPane {
 			}
 		});
 		addressTable.setShowGrid(true);
-		addressTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		TableColumnModel columnModel = addressTable.getColumnModel();
 		columnModel.getColumn(0).setMinWidth(200);
 		columnModel.getColumn(1).setMinWidth(500);
 		columnModel.getColumn(2).setMinWidth(150);
 		columnModel.getColumn(3).setMinWidth(150);
 		return addressTable;
-	}
-
-	@Override
-	public Dimension getMinimumSize() {
-		System.out.println(this.getSize());
-		return super.getMinimumSize();
 	}
 }
