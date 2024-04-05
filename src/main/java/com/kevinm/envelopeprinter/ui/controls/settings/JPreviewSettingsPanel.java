@@ -8,6 +8,8 @@ import javax.swing.SpringLayout;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import com.kevinm.envelopeprinter.ui.controls.JShowPreviewCheckBox;
+
 public class JPreviewSettingsPanel extends JPanel {
 	public JPreviewSettingsPanel() {
 
@@ -18,5 +20,7 @@ public class JPreviewSettingsPanel extends JPanel {
 		TitledBorder titledBorder = new TitledBorder(border, "Preview", TitledBorder.CENTER, TitledBorder.BOTTOM);
 		this.setBorder(titledBorder);
 
+		JShowPreviewCheckBox showPreview = new JShowPreviewCheckBox();
+		this.add(showPreview);
 	}
 }

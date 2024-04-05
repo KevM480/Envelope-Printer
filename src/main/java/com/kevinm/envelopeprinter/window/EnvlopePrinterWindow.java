@@ -1,8 +1,10 @@
 package com.kevinm.envelopeprinter.window;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
@@ -19,6 +21,8 @@ import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 
 public class EnvlopePrinterWindow extends JFrame {
 
+	private HashMap<String, Component> componentMap;
+
 	public EnvlopePrinterWindow() {
 		super("Envlope Printer");
 
@@ -33,19 +37,27 @@ public class EnvlopePrinterWindow extends JFrame {
 		width = (int) screenSize.getWidth();
 		height = (int) screenSize.getHeight();
 		this.setSize(width, height);
-		Container contentPane = this.getContentPane();
-		final JFontSettingsPanel fontSettings = new JFontSettingsPanel();
-		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
-		contentPane.add(fontSettings);
-		final JPreviewSettingsPanel previewSettings = new JPreviewSettingsPanel();
-		layout.putConstraint(SpringLayout.WEST, previewSettings, 0, SpringLayout.EAST, fontSettings);
-		layout.putConstraint(SpringLayout.NORTH, previewSettings, 0, SpringLayout.NORTH, contentPane);
-		contentPane.add(previewSettings);
 
+		Container contentPane = this.getContentPane();
+
+		final JFontSettingsPanel fontSettings = new JFontSettingsPanel();
+		final JPreviewSettingsPanel previewSettings = new JPreviewSettingsPanel();
 		final JAddressBookPane addressPane = new JAddressBookPane();
 		final JAddresseeFormPanel formPanel = new JAddresseeFormPanel();
 		final JPreviewPanel previewPanel = new JPreviewPanel();
+
+		this.addComponent("font_setting_panel", fontSettings);
+		this.addComponent("preview_setting_panel", previewSettings);
+		this.addComponent("form_panel", formPanel);
+		this.addComponent("address_pane", addressPane);
+		this.addComponent("preview_panel", previewPanel);
+
+		this.createComponentMap();
+		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
+
+		layout.putConstraint(SpringLayout.WEST, previewSettings, 0, SpringLayout.EAST, fontSettings);
+		layout.putConstraint(SpringLayout.NORTH, previewSettings, 0, SpringLayout.NORTH, contentPane);
 
 		layout.putConstraint(SpringLayout.NORTH, formPanel, 0, SpringLayout.SOUTH, fontSettings);
 		layout.putConstraint(SpringLayout.EAST, formPanel, -3, SpringLayout.EAST, contentPane);
@@ -59,24 +71,6 @@ public class EnvlopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.WEST, previewPanel, 3, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.EAST, previewPanel, -3, SpringLayout.WEST, formPanel);
 		layout.putConstraint(SpringLayout.SOUTH, previewPanel, -3, SpringLayout.SOUTH, contentPane);
-
-		contentPane.add(formPanel);
-		contentPane.add(addressPane);
-		contentPane.add(previewPanel);
-
-		/*
-		 * JLabel label = new JLabel("Label: ");
-		 * 
-		 * contentPane.add(label); JTextField textField = new JTextField("Text field",
-		 * 15); contentPane.add(textField); SpringLayout layout = new SpringLayout();
-		 * this.setLayout(layout); layout.putConstraint(SpringLayout.WEST, label, 5,
-		 * SpringLayout.WEST, contentPane); layout.putConstraint(SpringLayout.NORTH,
-		 * label, 5, SpringLayout.NORTH, contentPane);
-		 * 
-		 * layout.putConstraint(SpringLayout.WEST, textField, 5, SpringLayout.EAST,
-		 * label); layout.putConstraint(SpringLayout.NORTH, textField, 5,
-		 * SpringLayout.NORTH, contentPane);
-		 */
 	}
 
 	public static void main(String[] args) {
@@ -87,11 +81,30 @@ public class EnvlopePrinterWindow extends JFrame {
 					FlatIntelliJLaf.setup();
 					UIManager.put("ScrollBar.showButtons", true);
 					UIManager.put("ScrollBar.width", 16);
-					// FlatDarkLaf.setup();
 				} catch (Exception ignored) {
 				}
-				new EnvlopePrinterWindow().setVisible(true);
+				EnvlopePrinterWindow window = new EnvlopePrinterWindow();
+				window.setVisible(true);
 			}
 		});
 	}
+
+	private void addComponent(String name, Component component) {
+		Container contentPane = this.getContentPane();
+		component.setName(name);
+		contentPane.add(component);
+	}
+
+	private void createComponentMap() {
+		componentMap = new HashMap<String, Component>();
+		for (Component component : this.getContentPane().getComponents())
+			componentMap.put(component.getName(), component);
+	}
+
+	public Component getComponentNamed(String name) {
+		if (!componentMap.containsKey(name))
+			return null;
+		return componentMap.get(name);
+	}
+
 }
