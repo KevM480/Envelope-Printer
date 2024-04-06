@@ -24,12 +24,12 @@ public class JShowPreviewCheckBox extends JCheckBox {
 					Component previewPanel = window.getComponentNamed("preview_panel");
 					Container contentPane = window.getContentPane();
 					SpringLayout layout = (SpringLayout) contentPane.getLayout();
-					if (e.getStateChange() == 2) {
-						layout.putConstraint(SpringLayout.SOUTH, addressPane, -3, SpringLayout.SOUTH, contentPane);
-						previewPanel.setVisible(false);
-					} else if (e.getStateChange() == 1) {
+					if (JShowPreviewCheckBox.this.isSelected()) {
 						layout.putConstraint(SpringLayout.SOUTH, addressPane, -3, SpringLayout.NORTH, previewPanel);
 						previewPanel.setVisible(true);
+					} else {
+						layout.putConstraint(SpringLayout.SOUTH, addressPane, -3, SpringLayout.SOUTH, contentPane);
+						previewPanel.setVisible(false);
 					}
 					previewPanel.revalidate();
 					addressPane.revalidate();

@@ -25,7 +25,7 @@ public class EnvlopePrinterWindow extends JFrame {
 
 	public EnvlopePrinterWindow() {
 		super("Envlope Printer");
-
+		this.setName("envlope_printer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(MAXIMIZED_BOTH);
 		this.setMinimumSize(new Dimension(1000, 500));
@@ -71,6 +71,7 @@ public class EnvlopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.WEST, previewPanel, 3, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.EAST, previewPanel, -3, SpringLayout.WEST, formPanel);
 		layout.putConstraint(SpringLayout.SOUTH, previewPanel, -3, SpringLayout.SOUTH, contentPane);
+		this.setVisible(true);
 	}
 
 	public static void main(String[] args) {
@@ -83,8 +84,7 @@ public class EnvlopePrinterWindow extends JFrame {
 					UIManager.put("ScrollBar.width", 16);
 				} catch (Exception ignored) {
 				}
-				EnvlopePrinterWindow window = new EnvlopePrinterWindow();
-				window.setVisible(true);
+				new EnvlopePrinterWindow();
 			}
 		});
 	}
