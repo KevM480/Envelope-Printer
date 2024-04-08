@@ -2,7 +2,7 @@ package com.kevinm.envelopeprinter.ui.controls;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -17,26 +17,45 @@ import javax.swing.JScrollPane;
 import com.kevinm.envelopeprinter.draw.DrawEnvelope;
 
 public class JPreviewScrollPane extends JScrollPane {
+	final JEnvelopePreviewPanel previewPanel = new JEnvelopePreviewPanel();
 
 	public JPreviewScrollPane() {
-		super();
 		this.setBorder(BorderFactory.createLineBorder(getForeground()));
 
 		this.setPreferredSize(new Dimension(0, 500));
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(2000, 2000));
-		panel.setLayout(new GridBagLayout());
-		panel.add(new JEnvelopePreviewPanel());
-		this.setViewportView(panel);
+		this.setViewportView(previewPanel);
 
+		this.addMouseWheelListener(new MouseWheelListener() {
+
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				if (e.isControlDown()) {
+					zoom(e.getPoint(), e.getWheelRotation());
+				}
+			}
+
+		});
+	}
+
+	private void zoom(Point point, int wheelRotation) {
+		double zoomFactor = wheelRotation > 0 ? 0.9 : 1.1;
+		this.previewPanel.zoom = (this.previewPanel.zoom * zoomFactor);
+		Point pos = this.getViewport().getViewPosition();
+
+		int newX = (int) (point.x * (zoomFactor - 1) + zoomFactor * pos.x);
+		int newY = (int) (point.y * (zoomFactor - 1) + zoomFactor * pos.y);
+		this.getViewport().setViewPosition(new Point(newX, newY));
+
+		this.previewPanel.repaint();
+		this.previewPanel.revalidate();
 	}
 
 	public class JEnvelopePreviewPanel extends JPanel {
-		private double zoom = 1;
-		private double prevZoom = 0;
+		public double zoom = 1;
+		public double prevZoom = 0;
 
 		public JEnvelopePreviewPanel() {
 
@@ -44,26 +63,20 @@ public class JPreviewScrollPane extends JScrollPane {
 
 				@Override
 				public void keyTyped(KeyEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 				@Override
 				public void keyReleased(KeyEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 				@Override
 				public void keyPressed(KeyEvent e) {
-					System.out.println("s");
 					if (e.getKeyCode() == KeyEvent.VK_R) {
 						zoom = 1;
 						prevZoom = 0;
 						JEnvelopePreviewPanel.this.repaint();
 						JEnvelopePreviewPanel.this.revalidate();
 						JEnvelopePreviewPanel.this.getParent().revalidate();
-						e.consume();
 					}
 
 				}
@@ -92,27 +105,9 @@ public class JPreviewScrollPane extends JScrollPane {
 				public void mouseClicked(MouseEvent e) {
 				}
 			});
-			this.addMouseWheelListener(new MouseWheelListener() {
-
-				@Override
-				public void mouseWheelMoved(MouseWheelEvent e) {
-					double scale = 0;
-					if (e.getPreciseWheelRotation() < 0)
-						scale = 0.1;
-					else
-						scale = -0.1;
-					zoom = Math.clamp(zoom + scale, 0.5, 2);
-					if (zoom != prevZoom) {
-						JEnvelopePreviewPanel.this.revalidate();
-						JEnvelopePreviewPanel.this.repaint();
-						JEnvelopePreviewPanel.this.getParent().revalidate();
-					}
-					prevZoom = zoom;
-				}
-			});
 			this.setFocusable(true);
 			this.setRequestFocusEnabled(true);
-			this.setBorder(BorderFactory.createLineBorder(getForeground()));
+			this.setAutoscrolls(true);
 		}
 
 		@Override
