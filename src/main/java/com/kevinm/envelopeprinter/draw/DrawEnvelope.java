@@ -17,15 +17,14 @@ public class DrawEnvelope {
 	 * @param senderFont
 	 * @return
 	 */
-	public static Dimension drawExampleEnvelope(Graphics g, double zoom, double width, double height, Font addresseFont,
+	public static Dimension drawExampleEnvelope(Graphics g, double zoom, Dimension envelopeSize, Font addresseFont,
 			Font senderFont) {
-		int w, h, outerW, outerH, centerH, centerW, outerCenterW, outerCenterH, fontHeight;
-		w = (int) Math.round(width * 72D);
-		h = (int) Math.round(height * 72D);
-		outerW = (int) (w * zoom) * 3;
-		outerH = (int) (h * zoom) * 3;
-		centerW = (int) Math.round(w * 0.5);
-		centerH = (int) Math.round(h * 0.5);
+		int outerW, outerH, centerH, centerW, outerCenterW, outerCenterH, fontHeight;
+
+		outerW = (int) (envelopeSize.width * zoom) * 3;
+		outerH = (int) (envelopeSize.height * zoom) * 3;
+		centerW = (int) Math.round(envelopeSize.width * 0.5);
+		centerH = (int) Math.round(envelopeSize.height * 0.5);
 		outerCenterW = (int) Math.round(outerW * 0.5);
 		outerCenterH = (int) Math.round(outerH * 0.5);
 		Graphics2D g2 = (Graphics2D) g;
@@ -35,7 +34,7 @@ public class DrawEnvelope {
 		fontHeight = g2.getFontMetrics().getHeight();
 		g2.scale(zoom, zoom);
 		g2.setColor(Color.BLACK);
-		g2.drawRect(0, 0, w, h);
+		g2.drawRect(0, 0, envelopeSize.width, envelopeSize.height);
 		g2.drawString("Your Name", 5, fontHeight);
 		g2.setTransform(tran);
 		return new Dimension(outerW, outerH);
