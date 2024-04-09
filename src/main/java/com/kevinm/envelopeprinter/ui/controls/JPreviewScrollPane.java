@@ -3,10 +3,6 @@ package com.kevinm.envelopeprinter.ui.controls;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -33,88 +29,62 @@ public class JPreviewScrollPane extends JScrollPane {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				if (e.isControlDown()) {
-					zoom(e.getPoint(), e.getWheelRotation());
-				}
+					JPreviewScrollPane.this.setWheelScrollingEnabled(false);
+					JPreviewScrollPane.this.zoom(e.getPoint(), e.getWheelRotation());
+				} else
+					JPreviewScrollPane.this.setWheelScrollingEnabled(true);
 			}
-
 		});
 	}
 
 	private void zoom(Point point, int wheelRotation) {
 		double zoomFactor = wheelRotation > 0 ? 0.9 : 1.1;
-		this.previewPanel.zoom = (this.previewPanel.zoom * zoomFactor);
-		Point pos = this.getViewport().getViewPosition();
+		this.previewPanel.setZoom(zoomFactor);
 
-		int newX = (int) (point.x * (zoomFactor - 1) + zoomFactor * pos.x);
-		int newY = (int) (point.y * (zoomFactor - 1) + zoomFactor * pos.y);
-		this.getViewport().setViewPosition(new Point(newX, newY));
+		if (this.previewPanel.canZoom()) {
+			Point pos = this.getViewport().getViewPosition();
 
-		this.previewPanel.repaint();
-		this.previewPanel.revalidate();
+			int newX = (int) (point.x * (zoomFactor - 1) + zoomFactor * pos.x);
+			int newY = (int) (point.y * (zoomFactor - 1) + zoomFactor * pos.y);
+			this.getViewport().setViewPosition(new Point(newX, newY));
+
+			this.previewPanel.repaint();
+			this.previewPanel.revalidate();
+		}
+		this.previewPanel.setPrevZoom(this.previewPanel.getZoom());
 	}
 
 	public class JEnvelopePreviewPanel extends JPanel {
-		public double zoom = 1;
-		public double prevZoom = 0;
+		private double zoom = 1;
+		private double prevZoom = 0;
 
-		public JEnvelopePreviewPanel() {
+		public void setZoom(double zoomFactor) {
+			double zoomed = this.zoom * zoomFactor;
+			this.zoom = (zoomed > 0.5 && zoomed < 2) ? zoomed : this.zoom;
 
-			this.addKeyListener(new KeyListener() {
+		}
 
-				@Override
-				public void keyTyped(KeyEvent e) {
-				}
+		public double getZoom() {
+			return this.zoom;
+		}
 
-				@Override
-				public void keyReleased(KeyEvent e) {
-				}
+		public void setPrevZoom(double prevZoom) {
+			this.prevZoom = prevZoom;
+		}
 
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_R) {
-						zoom = 1;
-						prevZoom = 0;
-						JEnvelopePreviewPanel.this.repaint();
-						JEnvelopePreviewPanel.this.revalidate();
-						JEnvelopePreviewPanel.this.getParent().revalidate();
-					}
+		public double getPrevZoom() {
+			return this.prevZoom;
+		}
 
-				}
-			});
-
-			this.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-				}
-
-				@Override
-				public void mousePressed(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					JEnvelopePreviewPanel.this.requestFocusInWindow();
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-				}
-			});
-			this.setFocusable(true);
-			this.setRequestFocusEnabled(true);
-			this.setAutoscrolls(true);
+		private boolean canZoom() {
+			return this.zoom != this.prevZoom;
 		}
 
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 
-			Dimension dim = DrawEnvelope.drawExampleEnvelope(g, zoom, 5, 5, getFont(), getFont());
+			Dimension dim = DrawEnvelope.drawExampleEnvelope(g, this.zoom, 5, 5, getFont(), getFont());
 			this.setPreferredSize(dim);
 			this.setSize(dim);
 		}
