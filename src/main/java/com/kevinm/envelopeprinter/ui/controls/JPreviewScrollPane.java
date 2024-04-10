@@ -2,6 +2,7 @@ package com.kevinm.envelopeprinter.ui.controls;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -175,11 +176,11 @@ public class JPreviewScrollPane extends JScrollPane {
 
 		private boolean modifyZoomBy(double zoomFactor) {
 			double zoomed = this.zoom * zoomFactor;
-			this.zoom = (zoomed > 0.5 && zoomed < 2) ? zoomed : this.zoom;
+			this.zoom = (zoomed > 0.5 && zoomed < 3) ? zoomed : this.zoom;
 			boolean canZoom = this.canZoom();
 			if (canZoom) {
-				Dimension dim = new Dimension((int) (envelopeSize.width * zoom) * 3,
-						(int) (envelopeSize.height * zoom) * 3);
+				Dimension dim = new Dimension((int) (envelopeSize.width * zoom) * 2,
+						(int) (envelopeSize.height * zoom) * 2);
 				this.setPreferredSize(dim);
 				this.setSize(dim);
 				this.repaint();
@@ -209,7 +210,8 @@ public class JPreviewScrollPane extends JScrollPane {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 
-			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.envelopeSize, getFont(), getFont());
+			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.envelopeSize, new Font("Arial", Font.PLAIN, 8),
+					getFont());
 
 		}
 
