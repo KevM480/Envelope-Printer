@@ -90,7 +90,8 @@ public class EnvlopePrinterWindow extends JFrame {
 				} catch (Exception ignored) {
 				}
 				EnvlopePrinterWindow window = new EnvlopePrinterWindow();
-
+				JPreviewScrollPane pane = (JPreviewScrollPane) window.getComponentNamed("preview_panel");
+				pane.centerViewport();
 				PrintService service = PrintServiceLookup.lookupDefaultPrintService();
 				Media med[] = (Media[]) service.getSupportedAttributeValues(Media.class, null, null);
 				for (Media d : med) {
