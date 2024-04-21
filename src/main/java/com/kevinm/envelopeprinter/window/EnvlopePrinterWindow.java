@@ -12,7 +12,9 @@ import javax.print.attribute.standard.Media;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -49,14 +51,13 @@ public class EnvlopePrinterWindow extends JFrame {
 		final JPreviewSettingsPanel previewSettings = new JPreviewSettingsPanel();
 		final JAddressBookPane addressPane = new JAddressBookPane();
 		final JAddresseeFormPanel formPanel = new JAddresseeFormPanel();
-		final JPreviewScrollPane previewPanel = new JPreviewScrollPane();
-
+		final JPreviewScrollPane previewPane = new JPreviewScrollPane();
+		final JSplitPane splitPane = new JSplitPane(SwingConstants.HORIZONTAL, addressPane, previewPane);
+		splitPane.setDividerLocation(0.5);
 		this.addComponent("font_setting_panel", fontSettings);
 		this.addComponent("preview_setting_panel", previewSettings);
 		this.addComponent("form_panel", formPanel);
-		this.addComponent("address_pane", addressPane);
-		this.addComponent("preview_panel", previewPanel);
-
+		this.addComponent("split_pane", splitPane);
 		this.createComponentMap();
 		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
@@ -68,14 +69,11 @@ public class EnvlopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.EAST, formPanel, -3, SpringLayout.EAST, contentPane);
 		layout.putConstraint(SpringLayout.SOUTH, formPanel, -3, SpringLayout.SOUTH, contentPane);
 
-		layout.putConstraint(SpringLayout.NORTH, addressPane, 0, SpringLayout.SOUTH, fontSettings);
-		layout.putConstraint(SpringLayout.WEST, addressPane, 3, SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.EAST, addressPane, -3, SpringLayout.WEST, formPanel);
-		layout.putConstraint(SpringLayout.SOUTH, addressPane, -3, SpringLayout.NORTH, previewPanel);
+		layout.putConstraint(SpringLayout.NORTH, splitPane, 0, SpringLayout.SOUTH, fontSettings);
+		layout.putConstraint(SpringLayout.WEST, splitPane, 3, SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.EAST, splitPane, -3, SpringLayout.WEST, formPanel);
+		layout.putConstraint(SpringLayout.SOUTH, splitPane, -3, SpringLayout.SOUTH, contentPane);
 
-		layout.putConstraint(SpringLayout.WEST, previewPanel, 3, SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.EAST, previewPanel, -3, SpringLayout.WEST, formPanel);
-		layout.putConstraint(SpringLayout.SOUTH, previewPanel, -3, SpringLayout.SOUTH, contentPane);
 		this.setVisible(true);
 	}
 
@@ -90,8 +88,9 @@ public class EnvlopePrinterWindow extends JFrame {
 				} catch (Exception ignored) {
 				}
 				EnvlopePrinterWindow window = new EnvlopePrinterWindow();
-				JPreviewScrollPane pane = (JPreviewScrollPane) window.getComponentNamed("preview_panel");
-				pane.centerViewport();
+				JSplitPane splitPane = (JSplitPane) window.getComponentNamed("split_pane");
+				JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
+				scroll.centerViewport();
 				PrintService service = PrintServiceLookup.lookupDefaultPrintService();
 				Media med[] = (Media[]) service.getSupportedAttributeValues(Media.class, null, null);
 				for (Media d : med) {

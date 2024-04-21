@@ -18,55 +18,50 @@ public class DrawEnvelope {
 	 * @param senderFont
 	 * @return
 	 */
-	public static void drawExampleEnvelope(Graphics g, double zoom, Dimension envelopeSize, Font addresseFont,
-			Font senderFont) {
-		int outerW, outerH, centerH, centerW, outerCenterW, outerCenterH, fontHeight;
+	public static void drawExampleEnvelope(Graphics g, double zoom, Dimension envelopeSize, Dimension expandedSize,
+			Font addresseFont, Font senderFont) {
+		int outerW, outerH, centerH, centerW, outerCenterW, outerCenterH;
 
-		outerW = (int) (envelopeSize.width * zoom) * 2;
-		outerH = (int) (envelopeSize.height * zoom) * 2;
+		outerW = expandedSize.width;
+		outerH = expandedSize.height;
 		centerW = (int) Math.round(envelopeSize.width * 0.5);
 		centerH = (int) Math.round(envelopeSize.height * 0.5);
 		outerCenterW = (int) Math.round(outerW * 0.5);
 		outerCenterH = (int) Math.round(outerH * 0.5);
 		Graphics2D g2 = (Graphics2D) g;
 		AffineTransform tran = g2.getTransform();
-		g2.translate(outerCenterW - centerW, outerCenterH - centerH);
-		g2.setFont(addresseFont);
-		fontHeight = g2.getFontMetrics().getHeight();
 		g2.scale(zoom, zoom);
+		g2.translate(outerCenterW - centerW, outerCenterH - centerH);
 		g2.setColor(Color.BLACK);
 		g2.drawRect(0, 0, envelopeSize.width, envelopeSize.height);
-		// drawLines(g2, "Mike Smith\n100 Green Lime Rd\nFurnace City, IL,12345-1234",
-		// 0, 0);
-		// drawLines(g2, "Mike Smith\n100 Green Lime Rd\nFurnace City, IL,12345-1234",
-		// centerW, centerH);
-		Graphics2DTextBox sender = new Graphics2DTextBox(g2,
+		g2.setFont(addresseFont);
+		Graphics2DTextBox sender = new Graphics2DTextBox(g2, zoom,
 				"Mike Smith\n100 Green Lime Ave\nLake City, MA,12345-1234");
-		Graphics2DTextBox recipient = new Graphics2DTextBox(g2,
-				"Sam William\nSam's Boating School\n987 North River ST STE 201\nLake City, MA, 23456-1233");
 		sender.drawText(5, 4);
+		g2.setFont(senderFont);
+		Graphics2DTextBox recipient = new Graphics2DTextBox(g2, 1,
+				"Sam William\nSam's Boating School\n987 North River ST STE 201\nLake City, MA, 23456-1233");
 		recipient.drawTextCentered(centerW, centerH);
-		// g2.drawRect(0, 0, sender.size.width, sender.size.height);
 		g2.setTransform(tran);
+
 	}
 
 	private static class Graphics2DTextBox {
 		Dimension size = new Dimension();
 		String lines[] = {};
 		Graphics2D g2;
-		FontMetrics fontMetric;
 
-		private Graphics2DTextBox(Graphics2D g2, String string) {
+		private Graphics2DTextBox(Graphics2D g2, double zoom, String string) {
 			this.g2 = g2;
 			lines = string.split("\\n");
-			fontMetric = g2.getFontMetrics();
+			FontMetrics fontMetric = g2.getFontMetrics();
 			int maxWidth = 0, totalHeight = 0, lineHeight = fontMetric.getHeight();
 			for (String line : lines) {
 				maxWidth = Math.max(maxWidth, fontMetric.stringWidth(line));
 				totalHeight += lineHeight;
 			}
-			size.height = totalHeight - 2;
-			size.width = maxWidth;
+			size.height = (int) ((totalHeight - 2) * zoom);
+			size.width = (int) (maxWidth * zoom);
 		}
 
 		private void drawText(int x, int y) {

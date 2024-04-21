@@ -2,6 +2,7 @@ package com.kevinm.envelopeprinter.ui.controls;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import javax.swing.table.TableColumnModel;
 public class JAddressBookPane extends JScrollPane {
 	public JAddressBookPane() {
 		super(createTable());
+		this.setMinimumSize(new Dimension(0, 100));
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);

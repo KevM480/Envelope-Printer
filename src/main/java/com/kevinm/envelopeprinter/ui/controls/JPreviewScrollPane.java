@@ -24,7 +24,7 @@ public class JPreviewScrollPane extends JScrollPane {
 	public JPreviewScrollPane() {
 		this.setBorder(BorderFactory.createLineBorder(getForeground()));
 
-		this.setPreferredSize(new Dimension(0, 500));
+		this.setPreferredSize(new Dimension(0, 300));
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 		final JEnvelopePreviewPanel previewPanel = new JEnvelopePreviewPanel();
@@ -36,6 +36,15 @@ public class JPreviewScrollPane extends JScrollPane {
 		if (this.getViewport().getComponent(0) instanceof JEnvelopePreviewPanel previewPanel) {
 			previewPanel.centerZoom();
 		}
+	}
+
+	public Point getPointOffset(Point point) {
+		Dimension d = this.getSize();
+		Point p = new Point(point);
+		p.x -= d.width * 0.5;
+		p.y -= d.height * 0.5;
+
+		return p;
 	}
 
 	private class JEnvelopePreviewPanel extends JPanel {
@@ -53,6 +62,8 @@ public class JPreviewScrollPane extends JScrollPane {
 				public void mousePressed(MouseEvent e) {
 					JEnvelopePreviewPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					origin = new Point(e.getPoint());
+					Point p = JPreviewScrollPane.this.getPointOffset(origin);
+					JPreviewScrollPane.this.getViewport().setViewPosition(p);
 				}
 
 				@Override
@@ -135,7 +146,7 @@ public class JPreviewScrollPane extends JScrollPane {
 			this.setFocusable(true);
 		}
 
-		public void centerZoom() {
+		private void centerZoom() {
 			this.setDefualtZoom();
 			this.repaint();
 			this.revalidate();
@@ -147,14 +158,9 @@ public class JPreviewScrollPane extends JScrollPane {
 		}
 
 		private void zoom(Point point, int wheelRotation) {
-			double zoomFactor = wheelRotation > 0 ? 0.9 : 1.1;
+			double zoomFactor = wheelRotation < 0 ? 0.05 : -0.05;
 
 			if (this.modifyZoomBy(zoomFactor)) {
-				Point pos = JPreviewScrollPane.this.getViewport().getViewPosition();
-
-				int newX = (int) (point.x * (zoomFactor - 1) + zoomFactor * pos.x);
-				int newY = (int) (point.y * (zoomFactor - 1) + zoomFactor * pos.y);
-				JPreviewScrollPane.this.getViewport().setViewPosition(new Point(newX, newY));
 
 			}
 		}
@@ -168,6 +174,13 @@ public class JPreviewScrollPane extends JScrollPane {
 			return this.envelopeSize;
 		}
 
+		private Dimension getZoomedEnvelopeSize() {
+			Dimension dim = new Dimension(this.envelopeSize);
+			dim.height *= this.zoom;
+			dim.width *= this.zoom;
+			return dim;
+		}
+
 		private void setDefualtZoom() {
 			this.zoom = 1;
 			this.prevZoom = 0;
@@ -175,12 +188,13 @@ public class JPreviewScrollPane extends JScrollPane {
 		}
 
 		private boolean modifyZoomBy(double zoomFactor) {
-			double zoomed = this.zoom * zoomFactor;
+			double zoomed = this.zoom + zoomFactor;
 			this.zoom = (zoomed > 0.5 && zoomed < 3) ? zoomed : this.zoom;
 			boolean canZoom = this.canZoom();
 			if (canZoom) {
-				Dimension dim = new Dimension((int) (envelopeSize.width * zoom) * 2,
-						(int) (envelopeSize.height * zoom) * 2);
+
+				Dimension dim = new Dimension((int) (JPreviewScrollPane.this.getSize().width * zoom),
+						(int) (JPreviewScrollPane.this.getSize().height * zoom));
 				this.setPreferredSize(dim);
 				this.setSize(dim);
 				this.repaint();
@@ -210,8 +224,8 @@ public class JPreviewScrollPane extends JScrollPane {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 
-			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.envelopeSize, new Font("Arial", Font.PLAIN, 8),
-					getFont());
+			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.getEnvelopeSize(), JPreviewScrollPane.this.getSize(),
+					new Font("Arial", Font.PLAIN, 8), new Font("Arial", Font.PLAIN, 8));
 
 		}
 
