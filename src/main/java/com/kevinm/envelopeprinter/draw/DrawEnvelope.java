@@ -22,8 +22,8 @@ public class DrawEnvelope {
 			Font addresseFont, Font senderFont) {
 		int outerW, outerH, centerH, centerW, outerCenterW, outerCenterH;
 
-		outerW = expandedSize.width;
-		outerH = expandedSize.height;
+		outerW = expandedSize.width * 2;
+		outerH = expandedSize.height * 2;
 		centerW = (int) Math.round(envelopeSize.width * 0.5);
 		centerH = (int) Math.round(envelopeSize.height * 0.5);
 		outerCenterW = (int) Math.round(outerW * 0.5);

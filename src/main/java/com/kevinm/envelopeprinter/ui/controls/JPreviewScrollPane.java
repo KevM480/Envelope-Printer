@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -41,8 +40,8 @@ public class JPreviewScrollPane extends JScrollPane {
 	public Point getPointOffset(Point point) {
 		Dimension d = this.getSize();
 		Point p = new Point(point);
-		p.x -= d.width * 0.5;
-		p.y -= d.height * 0.5;
+		p.x -= d.width;
+		p.y -= d.height;
 
 		return p;
 	}
@@ -62,8 +61,7 @@ public class JPreviewScrollPane extends JScrollPane {
 				public void mousePressed(MouseEvent e) {
 					JEnvelopePreviewPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					origin = new Point(e.getPoint());
-					Point p = JPreviewScrollPane.this.getPointOffset(origin);
-					JPreviewScrollPane.this.getViewport().setViewPosition(p);
+					System.out.println(JPreviewScrollPane.this.getPointOffset(origin));
 				}
 
 				@Override
@@ -79,7 +77,9 @@ public class JPreviewScrollPane extends JScrollPane {
 					int maxViewPosX = JEnvelopePreviewPanel.this.getWidth() - viewport.getWidth();
 					int maxViewPosY = JEnvelopePreviewPanel.this.getHeight() - viewport.getHeight();
 
+					// Ensures the panel is larger than the viewport. Tells if it can scroll or not.
 					if (JEnvelopePreviewPanel.this.getWidth() > viewport.getWidth()) {
+						// Find the distance between the origin point and the new mouse point.
 						viewPos.x -= dragEventPoint.x - origin.x;
 
 						if (viewPos.x < 0) {
@@ -93,7 +93,9 @@ public class JPreviewScrollPane extends JScrollPane {
 						}
 					}
 
+					// Ensures the panel is larger than the viewport. Tells if it can scroll or not.
 					if (JEnvelopePreviewPanel.this.getHeight() > viewport.getHeight()) {
+						// Find the distance between the origin point and the new mouse point.
 						viewPos.y -= dragEventPoint.y - origin.y;
 
 						if (viewPos.y < 0) {
@@ -112,9 +114,9 @@ public class JPreviewScrollPane extends JScrollPane {
 
 				@Override
 				public void mouseWheelMoved(MouseWheelEvent e) {
-					if (e.isControlDown())
+					if (e.isControlDown()) {
 						JEnvelopePreviewPanel.this.zoom(e.getPoint(), e.getWheelRotation());
-					else
+					} else
 						JPreviewScrollPane.this.dispatchEvent(e);
 				}
 
@@ -147,22 +149,42 @@ public class JPreviewScrollPane extends JScrollPane {
 		}
 
 		private void centerZoom() {
-			this.setDefualtZoom();
+			// this.setDefualtZoom();
 			this.repaint();
 			this.revalidate();
-			Rectangle bounds = JPreviewScrollPane.this.getViewport().getViewRect();
-			Dimension size = this.getSize();
-			int x = (size.width - bounds.width) / 2;
-			int y = (size.height - bounds.height) / 2;
-			JPreviewScrollPane.this.getViewport().setViewPosition(new Point(x, y));
+			JViewport viewport = JPreviewScrollPane.this.getViewport();
+			int maxViewPosX = this.getWidth() - viewport.getWidth();
+			int maxViewPosY = this.getHeight() - viewport.getHeight();
+			int xCenter = (int) (maxViewPosX * 0.5);
+			int yCenter = (int) (maxViewPosY * 0.5);
+			System.out.println(new Point(xCenter, yCenter));
+			JPreviewScrollPane.this.getViewport().setViewPosition(new Point(xCenter, yCenter));
 		}
+
+		// 55 x
+		// 13 y
 
 		private void zoom(Point point, int wheelRotation) {
 			double zoomFactor = wheelRotation < 0 ? 0.05 : -0.05;
-
-			if (this.modifyZoomBy(zoomFactor)) {
-
+			if (this.trySetZoom(zoomFactor)) {
+				JViewport viewport = JPreviewScrollPane.this.getViewport();
+				Point viewPos = viewport.getViewPosition();
+				int maxViewPosX = this.getWidth() - viewport.getWidth();
+				int maxViewPosY = this.getHeight() - viewport.getHeight();
+				Point originSize = new Point(maxViewPosX, maxViewPosY);
+				double precentMouseX = (double) point.x / this.getWidth();
+				double precentMouseY = (double) point.y / this.getHeight();
+				modifyZoom();
+				int maxZoomedViewPosX = this.getWidth() - viewport.getWidth();
+				int maxZoomedViewPosY = this.getHeight() - viewport.getHeight();
+				Point zoomedSize = new Point(maxZoomedViewPosX, maxZoomedViewPosY);
+				viewPos.x += (zoomedSize.x - originSize.x) * precentMouseX;
+				viewPos.y += (zoomedSize.y - originSize.y) * precentMouseY;
+				System.out.println(precentMouseX);
+				System.out.println(precentMouseY);
+				viewport.setViewPosition(viewPos);
 			}
+
 		}
 
 		private void setEnvelopeSize(double inchWidth, double inchHeight) {
@@ -174,50 +196,45 @@ public class JPreviewScrollPane extends JScrollPane {
 			return this.envelopeSize;
 		}
 
-		private Dimension getZoomedEnvelopeSize() {
-			Dimension dim = new Dimension(this.envelopeSize);
-			dim.height *= this.zoom;
-			dim.width *= this.zoom;
-			return dim;
-		}
-
 		private void setDefualtZoom() {
-			this.zoom = 1;
+			this.zoom = 1.2;
 			this.prevZoom = 0;
-			modifyZoomBy(1);
+			modifyZoom();
 		}
 
-		private boolean modifyZoomBy(double zoomFactor) {
-			double zoomed = this.zoom + zoomFactor;
-			this.zoom = (zoomed > 0.5 && zoomed < 3) ? zoomed : this.zoom;
-			boolean canZoom = this.canZoom();
-			if (canZoom) {
-
-				Dimension dim = new Dimension((int) (JPreviewScrollPane.this.getSize().width * zoom),
-						(int) (JPreviewScrollPane.this.getSize().height * zoom));
-				this.setPreferredSize(dim);
-				this.setSize(dim);
-				this.repaint();
-				this.revalidate();
-			}
-			this.setPrevZoom(this.zoom);
-			return canZoom;
-		}
-
-		private double getZoom() {
-			return this.zoom;
+		/**
+		 * It is advised to use {@link #trySetZoom(double)} before calling this method.
+		 * This method will modify the preview by the zoom value;
+		 * 
+		 */
+		private void modifyZoom() {
+			Dimension dim = new Dimension((int) (JPreviewScrollPane.this.getWidth() * zoom) * 2,
+					(int) (JPreviewScrollPane.this.getSize().getHeight() * zoom) * 2);
+			this.setPreferredSize(dim);
+			this.setSize(dim);
+			this.repaint();
+			this.revalidate();
 		}
 
 		private void setPrevZoom(double prevZoom) {
 			this.prevZoom = prevZoom;
 		}
 
-		private double getPrevZoom() {
-			return this.prevZoom;
-		}
-
-		private boolean canZoom() {
-			return this.zoom != this.prevZoom;
+		/**
+		 * Will check to see if the zoom is at its max or min value. If it is not it
+		 * will increment the zoom and prevZoom to the new value.
+		 * 
+		 * @param zoomFactor Value by how much the zoom will change
+		 * @return
+		 */
+		private boolean trySetZoom(double zoomFactor) {
+			this.setPrevZoom(this.zoom);
+			double zoomed = this.zoom + zoomFactor;
+			if (zoomed != this.prevZoom && (zoomed > 0.5 && zoomed < 3)) {
+				this.zoom = zoomed;
+				return true;
+			}
+			return false;
 		}
 
 		@Override
