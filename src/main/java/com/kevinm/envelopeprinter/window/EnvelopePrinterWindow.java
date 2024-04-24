@@ -25,7 +25,6 @@ import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 public class EnvelopePrinterWindow extends JFrame {
 
 	private HashMap<String, Component> componentMap;
-	private EnvelopeProperties properties = new EnvelopeProperties();
 
 	public EnvelopePrinterWindow() {
 		super("Envlope Printer");
@@ -103,11 +102,11 @@ public class EnvelopePrinterWindow extends JFrame {
 	}
 
 	private void preInit() {
-		properties.loadProperties();
+		EnvelopeProperties.loadProperties();
 	}
 
 	private void postInit() {
-		properties.saveProperties();
+		EnvelopeProperties.saveProperties();
 	}
 
 	private void addComponent(String name, Component component) {

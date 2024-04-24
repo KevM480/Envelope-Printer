@@ -1,4 +1,4 @@
-package com.kevinm.envelopeprinter.properties;
+package com.kevinm.envelopeprinter.properties.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
