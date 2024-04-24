@@ -7,7 +7,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import com.kevinm.envelopeprinter.window.EnvlopePrinterWindow;
+import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class JShowPreviewCheckBox extends JCheckBox {
 	public JShowPreviewCheckBox() {
@@ -17,7 +17,7 @@ public class JShowPreviewCheckBox extends JCheckBox {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (SwingUtilities
-						.getWindowAncestor(JShowPreviewCheckBox.this) instanceof EnvlopePrinterWindow window) {
+						.getWindowAncestor(JShowPreviewCheckBox.this) instanceof EnvelopePrinterWindow window) {
 					JSplitPane split = (JSplitPane) window.getComponentNamed("split_pane");
 					if (JShowPreviewCheckBox.this.isSelected()) {
 						split.getBottomComponent().setVisible(true);

@@ -6,11 +6,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.HashMap;
 
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.attribute.standard.Media;
-import javax.print.attribute.standard.MediaSize;
-import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
@@ -19,6 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.kevinm.envelopeprinter.properties.EnvelopeProperties;
 import com.kevinm.envelopeprinter.ui.controls.JAddressBookPane;
 import com.kevinm.envelopeprinter.ui.controls.JAddresseeFormPanel;
 import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
@@ -26,12 +22,14 @@ import com.kevinm.envelopeprinter.ui.controls.JTopMenuBar;
 import com.kevinm.envelopeprinter.ui.controls.settings.JFontSettingsPanel;
 import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 
-public class EnvlopePrinterWindow extends JFrame {
+public class EnvelopePrinterWindow extends JFrame {
 
 	private HashMap<String, Component> componentMap;
+	private EnvelopeProperties properties = new EnvelopeProperties();
 
-	public EnvlopePrinterWindow() {
+	public EnvelopePrinterWindow() {
 		super("Envlope Printer");
+		this.preInit();
 		this.setName("envlope_printer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(MAXIMIZED_BOTH);
@@ -87,20 +85,29 @@ public class EnvlopePrinterWindow extends JFrame {
 					UIManager.put("ScrollBar.width", 16);
 				} catch (Exception ignored) {
 				}
-				EnvlopePrinterWindow window = new EnvlopePrinterWindow();
+				EnvelopePrinterWindow window = new EnvelopePrinterWindow();
 				JSplitPane splitPane = (JSplitPane) window.getComponentNamed("split_pane");
 				JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
 				scroll.centerViewport();
-				PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-				Media med[] = (Media[]) service.getSupportedAttributeValues(Media.class, null, null);
-				for (Media d : med) {
-					if (d instanceof MediaSizeName name) {
-						MediaSize s = MediaSize.getMediaSizeForName(name);
-						System.out.println(s.getSize(MediaSize.INCH)[0] + " " + s.getSize(MediaSize.INCH)[1] + " " + d);
-					}
-				}
+				window.postInit();
+				/*
+				 * PrintService service = PrintServiceLookup.lookupDefaultPrintService(); Media
+				 * med[] = (Media[]) service.getSupportedAttributeValues(Media.class, null,
+				 * null); for (Media d : med) { if (d instanceof MediaSizeName name) { MediaSize
+				 * s = MediaSize.getMediaSizeForName(name);
+				 * System.out.println(s.getSize(MediaSize.INCH)[0] + " " +
+				 * s.getSize(MediaSize.INCH)[1] + " " + d); } }
+				 */
 			}
 		});
+	}
+
+	private void preInit() {
+		properties.loadProperties();
+	}
+
+	private void postInit() {
+		properties.saveProperties();
 	}
 
 	private void addComponent(String name, Component component) {

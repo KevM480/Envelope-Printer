@@ -27,6 +27,7 @@ public class JPreviewScrollPane extends JScrollPane {
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 		final JEnvelopePreviewPanel previewPanel = new JEnvelopePreviewPanel();
+		previewPanel.modifyZoom();
 		this.setViewportView(previewPanel);
 		this.setAutoscrolls(true);
 	}
@@ -35,15 +36,6 @@ public class JPreviewScrollPane extends JScrollPane {
 		if (this.getViewport().getComponent(0) instanceof JEnvelopePreviewPanel previewPanel) {
 			previewPanel.centerZoom();
 		}
-	}
-
-	public Point getPointOffset(Point point) {
-		Dimension d = this.getSize();
-		Point p = new Point(point);
-		p.x -= d.width;
-		p.y -= d.height;
-
-		return p;
 	}
 
 	private class JEnvelopePreviewPanel extends JPanel {
@@ -61,7 +53,6 @@ public class JPreviewScrollPane extends JScrollPane {
 				public void mousePressed(MouseEvent e) {
 					JEnvelopePreviewPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 					origin = new Point(e.getPoint());
-					System.out.println(JPreviewScrollPane.this.getPointOffset(origin));
 				}
 
 				@Override
@@ -149,7 +140,6 @@ public class JPreviewScrollPane extends JScrollPane {
 		}
 
 		private void centerZoom() {
-			// this.setDefualtZoom();
 			this.repaint();
 			this.revalidate();
 			JViewport viewport = JPreviewScrollPane.this.getViewport();
@@ -157,31 +147,36 @@ public class JPreviewScrollPane extends JScrollPane {
 			int maxViewPosY = this.getHeight() - viewport.getHeight();
 			int xCenter = (int) (maxViewPosX * 0.5);
 			int yCenter = (int) (maxViewPosY * 0.5);
-			System.out.println(new Point(xCenter, yCenter));
 			JPreviewScrollPane.this.getViewport().setViewPosition(new Point(xCenter, yCenter));
 		}
-
-		// 55 x
-		// 13 y
 
 		private void zoom(Point point, int wheelRotation) {
 			double zoomFactor = wheelRotation < 0 ? 0.05 : -0.05;
 			if (this.trySetZoom(zoomFactor)) {
 				JViewport viewport = JPreviewScrollPane.this.getViewport();
 				Point viewPos = viewport.getViewPosition();
+
 				int maxViewPosX = this.getWidth() - viewport.getWidth();
 				int maxViewPosY = this.getHeight() - viewport.getHeight();
+				// Size of the scroll area of the Scroll Pane before zooming
 				Point originSize = new Point(maxViewPosX, maxViewPosY);
+
+				// Gets the mouse's position relative to the envelope preview as a percentage
 				double precentMouseX = (double) point.x / this.getWidth();
 				double precentMouseY = (double) point.y / this.getHeight();
+
+				// Modifies the zoom values and updates the screen
 				modifyZoom();
+
 				int maxZoomedViewPosX = this.getWidth() - viewport.getWidth();
 				int maxZoomedViewPosY = this.getHeight() - viewport.getHeight();
+				// Size of the scroll area of the Scroll Pane after zooming
 				Point zoomedSize = new Point(maxZoomedViewPosX, maxZoomedViewPosY);
+
+				// Gets the distance traveled by zooming and multiplies it by the mouse position
 				viewPos.x += (zoomedSize.x - originSize.x) * precentMouseX;
 				viewPos.y += (zoomedSize.y - originSize.y) * precentMouseY;
-				System.out.println(precentMouseX);
-				System.out.println(precentMouseY);
+
 				viewport.setViewPosition(viewPos);
 			}
 
