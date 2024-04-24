@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.kevinm.envelopeprinter.properties.EnvelopeProperties;
+import com.kevinm.envelopeprinter.properties.EnvelopePrinterProperties;
 import com.kevinm.envelopeprinter.ui.controls.JAddressBookPane;
 import com.kevinm.envelopeprinter.ui.controls.JAddresseeFormPanel;
 import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
@@ -25,6 +25,7 @@ import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 public class EnvelopePrinterWindow extends JFrame {
 
 	private HashMap<String, Component> componentMap;
+	private EnvelopePrinterProperties propertiesConfig = new EnvelopePrinterProperties();
 
 	public EnvelopePrinterWindow() {
 		super("Envlope Printer");
@@ -102,11 +103,11 @@ public class EnvelopePrinterWindow extends JFrame {
 	}
 
 	private void preInit() {
-		EnvelopeProperties.loadProperties();
+		propertiesConfig.loadProperties();
 	}
 
 	private void postInit() {
-		EnvelopeProperties.saveProperties();
+		propertiesConfig.saveProperties();
 	}
 
 	private void addComponent(String name, Component component) {
