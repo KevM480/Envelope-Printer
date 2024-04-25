@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
 import com.kevinm.envelopeprinter.draw.DrawEnvelope;
+import com.kevinm.envelopeprinter.properties.EnvelopePrinterProperties;
 
 public class JPreviewScrollPane extends JScrollPane {
 
@@ -203,8 +204,7 @@ public class JPreviewScrollPane extends JScrollPane {
 		 * 
 		 */
 		private void modifyZoom() {
-			Dimension dim = new Dimension((int) (JPreviewScrollPane.this.getWidth() * zoom) * 2,
-					(int) (JPreviewScrollPane.this.getSize().getHeight() * zoom) * 2);
+			Dimension dim = new Dimension((int) (JPreviewScrollPane.this.getWidth() * zoom) * 2, (int) (JPreviewScrollPane.this.getSize().getHeight() * zoom) * 2);
 			this.setPreferredSize(dim);
 			this.setSize(dim);
 			this.repaint();
@@ -237,7 +237,8 @@ public class JPreviewScrollPane extends JScrollPane {
 			super.paintComponent(g);
 
 			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.getEnvelopeSize(), JPreviewScrollPane.this.getSize(),
-					new Font("Arial", Font.PLAIN, 8), new Font("Arial", Font.PLAIN, 8));
+					new Font(EnvelopePrinterProperties.senderFontName, Font.PLAIN, EnvelopePrinterProperties.senderFontSize),
+					new Font(EnvelopePrinterProperties.receiverFontName, Font.PLAIN, EnvelopePrinterProperties.receiverFontSize));
 
 		}
 

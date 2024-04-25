@@ -10,11 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
-import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.kevinm.envelopeprinter.properties.EnvelopePrinterProperties;
 import com.kevinm.envelopeprinter.ui.controls.JAddressBookPane;
 import com.kevinm.envelopeprinter.ui.controls.JAddresseeFormPanel;
 import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
@@ -24,12 +20,10 @@ import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 
 public class EnvelopePrinterWindow extends JFrame {
 
-	private HashMap<String, Component> componentMap;
-	private EnvelopePrinterProperties propertiesConfig = new EnvelopePrinterProperties();
+	private static HashMap<String, Component> componentMap;
 
 	public EnvelopePrinterWindow() {
 		super("Envlope Printer");
-		this.preInit();
 		this.setName("envlope_printer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(MAXIMIZED_BOTH);
@@ -73,41 +67,6 @@ public class EnvelopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.SOUTH, splitPane, -3, SpringLayout.SOUTH, contentPane);
 
 		this.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					FlatIntelliJLaf.setup();
-					UIManager.put("ScrollBar.showButtons", true);
-					UIManager.put("ScrollBar.width", 16);
-				} catch (Exception ignored) {
-				}
-				EnvelopePrinterWindow window = new EnvelopePrinterWindow();
-				JSplitPane splitPane = (JSplitPane) window.getComponentNamed("split_pane");
-				JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
-				scroll.centerViewport();
-				window.postInit();
-				/*
-				 * PrintService service = PrintServiceLookup.lookupDefaultPrintService(); Media
-				 * med[] = (Media[]) service.getSupportedAttributeValues(Media.class, null,
-				 * null); for (Media d : med) { if (d instanceof MediaSizeName name) { MediaSize
-				 * s = MediaSize.getMediaSizeForName(name);
-				 * System.out.println(s.getSize(MediaSize.INCH)[0] + " " +
-				 * s.getSize(MediaSize.INCH)[1] + " " + d); } }
-				 */
-			}
-		});
-	}
-
-	private void preInit() {
-		propertiesConfig.loadProperties();
-	}
-
-	private void postInit() {
-		propertiesConfig.saveProperties();
 	}
 
 	private void addComponent(String name, Component component) {

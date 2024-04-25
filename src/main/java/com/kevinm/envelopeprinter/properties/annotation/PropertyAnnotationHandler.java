@@ -8,21 +8,23 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
+import com.kevinm.envelopeprinter.properties.PropertiesConfig;
+
 public class PropertyAnnotationHandler {
 
 	private Properties inputProperties;
-	private String filePath;
+	private PropertiesConfig propertiesConfig;
 	private Field[] fields;
 
-	public PropertyAnnotationHandler(Class<?> containingClass, String filePath) {
+	public PropertyAnnotationHandler(PropertiesConfig propertiesConfig) {
 		this.inputProperties = new Properties();
-		this.filePath = filePath;
-		try (InputStream input = new FileInputStream(filePath)) {
+		this.propertiesConfig = propertiesConfig;
+		try (InputStream input = new FileInputStream(propertiesConfig.getFilePath())) {
 			inputProperties.load(input);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.fields = containingClass.getFields();
+		this.fields = propertiesConfig.getFields();
 	}
 
 	public void loadProperties() {
@@ -41,13 +43,15 @@ public class PropertyAnnotationHandler {
 				}
 			}
 		}
+		propertiesConfig.afterLoadingProperties();
 	}
 
 	public void saveProperties() {
+		propertiesConfig.beforeSavingProperties();
 		for (Field field : fields)
 			setProperty(field);
 		try {
-			inputProperties.store(new FileOutputStream(this.filePath), null);
+			inputProperties.store(new FileOutputStream(propertiesConfig.getFilePath()), null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

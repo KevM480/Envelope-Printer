@@ -1,17 +1,10 @@
 package com.kevinm.envelopeprinter.properties;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import com.kevinm.envelopeprinter.properties.annotation.Property;
-import com.kevinm.envelopeprinter.properties.annotation.PropertyAnnotationHandler;
 
-public class EnvelopePrinterProperties {
-
-	private static PropertyAnnotationHandler propertiesHandler;
-
-	public static Font senderFont;
-	public static Font recieverFont;
+public class EnvelopePrinterProperties implements PropertiesConfig {
 
 	@Property(key = "sender.fontName")
 	public static String senderFontName = "Arial";
@@ -30,15 +23,19 @@ public class EnvelopePrinterProperties {
 	@Property(key = "window.showPreview")
 	public static Boolean showPreview = true;
 
-	public EnvelopePrinterProperties() {
-		propertiesHandler = new PropertyAnnotationHandler(this.getClass(), "envelope_printer.properties");
+	@Override
+	public String getFilePath() {
+		return "envelope_printer.properties";
 	}
 
-	public void loadProperties() {
-		propertiesHandler.loadProperties();
+	@Override
+	public void afterLoadingProperties() {
+
 	}
 
-	public void saveProperties() {
-		propertiesHandler.saveProperties();
+	@Override
+	public void beforeSavingProperties() {
+
 	}
+
 }
