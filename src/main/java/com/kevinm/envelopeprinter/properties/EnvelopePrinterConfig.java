@@ -1,26 +1,30 @@
 package com.kevinm.envelopeprinter.properties;
 
 import java.awt.Color;
+import java.awt.Font;
 
-import com.kevinm.envelopeprinter.properties.annotation.Property;
+import com.kevinm.envelopeprinter.properties.annotation.ConfigProperty;
 
-public class EnvelopePrinterProperties implements PropertiesConfig {
+public class EnvelopePrinterConfig implements ConfigProperties {
 
-	@Property(key = "sender.fontName")
+	public static Font senderFont;
+	public static Font recieverFont;
+
+	@ConfigProperty(key = "sender.fontName")
 	public static String senderFontName = "Arial";
-	@Property(key = "sender.fontSize")
+	@ConfigProperty(key = "sender.fontSize")
 	public static Integer senderFontSize = 8;
-	@Property(key = "sender.fontColor")
+	@ConfigProperty(key = "sender.fontColor")
 	public static Integer senderFontColor = Color.BLACK.getRGB();
 
-	@Property(key = "receiver.fontName")
+	@ConfigProperty(key = "receiver.fontName")
 	public static String receiverFontName = "Arial";
-	@Property(key = "receiver.fontSize")
+	@ConfigProperty(key = "receiver.fontSize")
 	public static Integer receiverFontSize = 8;
-	@Property(key = "receiver.fontColor")
+	@ConfigProperty(key = "receiver.fontColor")
 	public static Integer receiverFontColor = Color.BLACK.getRGB();
 
-	@Property(key = "window.showPreview")
+	@ConfigProperty(key = "window.showPreview")
 	public static Boolean showPreview = true;
 
 	@Override
@@ -34,7 +38,7 @@ public class EnvelopePrinterProperties implements PropertiesConfig {
 	}
 
 	@Override
-	public void beforeSavingProperties() {
+	public void afterSavingProperties() {
 
 	}
 

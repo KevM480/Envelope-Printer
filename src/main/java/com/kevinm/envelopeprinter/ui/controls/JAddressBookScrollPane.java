@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-public class JAddressBookPane extends JScrollPane {
-	public JAddressBookPane() {
+public class JAddressBookScrollPane extends JScrollPane {
+	public JAddressBookScrollPane() {
 		super(createTable());
 		this.setMinimumSize(new Dimension(0, 100));
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -40,8 +40,7 @@ public class JAddressBookPane extends JScrollPane {
 		addressTable.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				final JLabel label = new JLabel((String) value);
 				label.setVerticalAlignment(SwingConstants.CENTER);
 				label.setHorizontalAlignment(SwingConstants.CENTER);

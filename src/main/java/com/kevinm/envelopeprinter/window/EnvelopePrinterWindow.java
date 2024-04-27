@@ -11,7 +11,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import com.kevinm.envelopeprinter.ui.controls.JAddressBookPane;
+import com.kevinm.envelopeprinter.ui.controls.JAddressBookScrollPane;
 import com.kevinm.envelopeprinter.ui.controls.JAddresseeFormPanel;
 import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
 import com.kevinm.envelopeprinter.ui.controls.JTopMenuBar;
@@ -41,7 +41,7 @@ public class EnvelopePrinterWindow extends JFrame {
 
 		final JFontSettingsPanel fontSettings = new JFontSettingsPanel();
 		final JPreviewSettingsPanel previewSettings = new JPreviewSettingsPanel();
-		final JAddressBookPane addressPane = new JAddressBookPane();
+		final JAddressBookScrollPane addressPane = new JAddressBookScrollPane();
 		final JAddresseeFormPanel formPanel = new JAddresseeFormPanel();
 		final JPreviewScrollPane previewPane = new JPreviewScrollPane();
 		final JSplitPane splitPane = new JSplitPane(SwingConstants.HORIZONTAL, addressPane, previewPane);

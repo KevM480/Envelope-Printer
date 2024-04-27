@@ -14,8 +14,7 @@ public class JColorSelectorButton extends JButton {
 	}
 
 	private static Icon createIcon() {
-		ImageIcon iconUnderline = new ImageIcon(
-				ClassLoader.getSystemClassLoader().getResource("assets/icons/font.png"));
+		ImageIcon iconUnderline = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("assets/icons/font.png"));
 		return new ImageIcon(iconUnderline.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH));
 	}
 

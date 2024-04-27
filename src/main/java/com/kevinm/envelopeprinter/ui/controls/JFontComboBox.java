@@ -16,12 +16,12 @@ public class JFontComboBox extends JComboBox<String> {
 		this.setRenderer(new FontComboBoxRenderer());
 		this.setEditable(true);
 		AutoCompleteDocument.addDocumentTo(this);
+
 	}
 
 	private static class FontComboBoxRenderer extends BasicComboBoxRenderer {
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			String fontFamilyName = (String) value;
 			setFont(new Font(fontFamilyName, Font.PLAIN, 12));
