@@ -12,9 +12,11 @@ public interface PropertyItemListener extends ItemListener {
 
 	@Override
 	public default void itemStateChanged(ItemEvent e) {
-		setProperties(e);
-		EnvelopePrinter.getPropertiesHandler().setProperties();
-		EnvelopePrinter.getPropertiesHandler().writeProperties();
+		if (!EnvelopePrinter.getIsBuilding() && EnvelopePrinter.getRoot() != null && e.getStateChange() == ItemEvent.SELECTED) {
+			setProperties(e);
+			EnvelopePrinter.getPropertiesHandler().setProperties();
+			EnvelopePrinter.getPropertiesHandler().writeProperties();
+		}
 	}
 
 	public default void repaintComponet(Component componet) {

@@ -27,6 +27,7 @@ import com.kevinm.envelopeprinter.ui.controls.JFontComboBox;
 import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class JFontSettingsPanel extends JPanel {
+
 	private final static Integer[] FONT_SIZES = new Integer[] { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28 };
 
 	public JFontSettingsPanel() {
@@ -62,14 +63,13 @@ public class JFontSettingsPanel extends JPanel {
 		fontSelector.addItemListener(new PropertyItemListener() {
 			@Override
 			public void setProperties(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					if (name.equals("Reciever"))
-						EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
-					else if (name.equals("Sender"))
-						EnvelopePrinterConfig.senderFontName = (String) e.getItem();
-					EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
-					this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
-				}
+				if (name.equals("Reciever"))
+					EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
+				else if (name.equals("Sender"))
+					EnvelopePrinterConfig.senderFontName = (String) e.getItem();
+				EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
+				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
+
 			}
 		});
 		layout.putConstraint(SpringLayout.NORTH, fontSelector, 0, SpringLayout.NORTH, panel);
@@ -81,20 +81,27 @@ public class JFontSettingsPanel extends JPanel {
 		fontSizeSelector.addItemListener(new PropertyItemListener() {
 			@Override
 			public void setProperties(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					if (name.equals("Reciever"))
-						EnvelopePrinterConfig.receiverFontSize = (Integer) e.getItem();
-					else if (name.equals("Sender"))
-						EnvelopePrinterConfig.senderFontSize = (Integer) e.getItem();
-					EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
-					this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
-				}
+				if (name.equals("Reciever"))
+					EnvelopePrinterConfig.receiverFontSize = (Integer) e.getItem();
+				else if (name.equals("Sender"))
+					EnvelopePrinterConfig.senderFontSize = (Integer) e.getItem();
+				EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
+				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
+
 			}
 		});
 		fontSizeSelector.setPreferredSize(new Dimension(50, 25));
 		layout.putConstraint(SpringLayout.NORTH, fontSizeSelector, 0, SpringLayout.NORTH, fontSelector);
 		layout.putConstraint(SpringLayout.WEST, fontSizeSelector, 5, SpringLayout.EAST, fontSelector);
 		panel.add(fontSizeSelector);
+
+		if (name.equals("Reciever")) {
+			fontSizeSelector.setSelectedItem(EnvelopePrinterConfig.receiverFontSize);
+			fontSelector.setSelectedItem(EnvelopePrinterConfig.receiverFontName);
+		} else if (name.equals("Sender")) {
+			fontSizeSelector.setSelectedItem(EnvelopePrinterConfig.senderFontSize);
+			fontSelector.setSelectedItem(EnvelopePrinterConfig.senderFontName);
+		}
 
 		ImageIcon iconBold = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("assets/icons/bold.png"));
 		iconBold = new ImageIcon(iconBold.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));

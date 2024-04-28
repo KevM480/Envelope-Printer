@@ -39,7 +39,7 @@ public class JPreviewScrollPane extends JScrollPane {
 	}
 
 	private class JEnvelopePreviewPanel extends JPanel {
-		private double zoom = 1;
+		private double zoom = 1.2;
 		private double prevZoom = 0;
 		private Dimension envelopeSize = new Dimension();
 
@@ -234,9 +234,7 @@ public class JPreviewScrollPane extends JScrollPane {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-
 			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.getEnvelopeSize(), JPreviewScrollPane.this.getSize(), EnvelopePrinterConfig.senderFont, EnvelopePrinterConfig.recieverFont);
-
 		}
 
 	}
