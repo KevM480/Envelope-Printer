@@ -1,5 +1,6 @@
 package com.kevinm.envelopeprinter.properties.events;
 
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -14,5 +15,10 @@ public interface PropertyItemListener extends ItemListener {
 		setProperties(e);
 		EnvelopePrinter.getPropertiesHandler().setProperties();
 		EnvelopePrinter.getPropertiesHandler().writeProperties();
+	}
+
+	public default void repaintComponet(Component componet) {
+		componet.revalidate();
+		componet.repaint();
 	}
 }

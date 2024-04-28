@@ -12,9 +12,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -22,6 +24,7 @@ import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.properties.events.PropertyItemListener;
 import com.kevinm.envelopeprinter.ui.controls.JColorSelectorButton;
 import com.kevinm.envelopeprinter.ui.controls.JFontComboBox;
+import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class JFontSettingsPanel extends JPanel {
 	private final static Integer[] FONT_SIZES = new Integer[] { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28 };
@@ -64,6 +67,8 @@ public class JFontSettingsPanel extends JPanel {
 						EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
 					else if (name.equals("Sender"))
 						EnvelopePrinterConfig.senderFontName = (String) e.getItem();
+				EnvelopePrinterWindow window = (EnvelopePrinterWindow) SwingUtilities.getRoot(fontSelector);
+				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
 			}
 		});
 		layout.putConstraint(SpringLayout.NORTH, fontSelector, 0, SpringLayout.NORTH, panel);

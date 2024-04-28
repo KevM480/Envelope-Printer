@@ -2,7 +2,6 @@ package com.kevinm.envelopeprinter.ui.controls;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -17,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
 import com.kevinm.envelopeprinter.draw.DrawEnvelope;
+import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 
 public class JPreviewScrollPane extends JScrollPane {
 
@@ -235,7 +235,7 @@ public class JPreviewScrollPane extends JScrollPane {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 
-			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.getEnvelopeSize(), JPreviewScrollPane.this.getSize(), new Font("Arial", Font.PLAIN, 8), new Font("Arial", Font.PLAIN, 8));
+			DrawEnvelope.drawExampleEnvelope(g, this.zoom, this.getEnvelopeSize(), JPreviewScrollPane.this.getSize(), EnvelopePrinterConfig.senderFont, EnvelopePrinterConfig.recieverFont);
 
 		}
 
