@@ -39,7 +39,8 @@ public class EnvelopePrinterConfig implements ConfigProperties {
 
 	@Override
 	public void afterSavingProperties() {
-
+		senderFont = new Font(senderFontName, Font.PLAIN, senderFontSize);
+		recieverFont = new Font(receiverFontName, Font.PLAIN, receiverFontSize);
 	}
 
 }
