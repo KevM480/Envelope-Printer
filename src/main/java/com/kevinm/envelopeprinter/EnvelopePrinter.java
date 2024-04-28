@@ -55,11 +55,11 @@ public class EnvelopePrinter {
 			}
 		}, "Shutdown-thread"));
 
-		// saves properties every minute
+		// Will be used for backing up list of addresses
 		Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				configPropertiesHandler.writeProperties();
+
 			}
 		}, 1, 1, TimeUnit.MINUTES);
 	}
