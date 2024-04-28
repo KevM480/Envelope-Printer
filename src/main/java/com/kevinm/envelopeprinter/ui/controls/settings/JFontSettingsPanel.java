@@ -16,10 +16,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import com.kevinm.envelopeprinter.EnvelopePrinter;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.properties.events.PropertyItemListener;
 import com.kevinm.envelopeprinter.ui.controls.JColorSelectorButton;
@@ -67,7 +67,7 @@ public class JFontSettingsPanel extends JPanel {
 						EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
 					else if (name.equals("Sender"))
 						EnvelopePrinterConfig.senderFontName = (String) e.getItem();
-				EnvelopePrinterWindow window = (EnvelopePrinterWindow) SwingUtilities.getRoot(fontSelector);
+				EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
 				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
 			}
 		});

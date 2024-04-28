@@ -16,6 +16,7 @@ import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 public class EnvelopePrinter {
 
 	private static ConfigPropertiesHandler configPropertiesHandler;
+	private static EnvelopePrinterWindow root;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -32,6 +33,7 @@ public class EnvelopePrinter {
 				configPropertiesHandler = new ConfigPropertiesHandler(printerConfig);
 				envelopePrinter.preInit();
 				EnvelopePrinterWindow window = new EnvelopePrinterWindow();
+				root = window;
 				JSplitPane splitPane = (JSplitPane) window.getComponentNamed("split_pane");
 				JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
 				scroll.centerViewport();
@@ -62,6 +64,10 @@ public class EnvelopePrinter {
 
 			}
 		}, 1, 1, TimeUnit.MINUTES);
+	}
+
+	public static EnvelopePrinterWindow getRoot() {
+		return root;
 	}
 
 	public static ConfigPropertiesHandler getPropertiesHandler() {
