@@ -62,13 +62,14 @@ public class JFontSettingsPanel extends JPanel {
 		fontSelector.addItemListener(new PropertyItemListener() {
 			@Override
 			public void setProperties(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED)
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					if (name.equals("Reciever"))
 						EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
 					else if (name.equals("Sender"))
 						EnvelopePrinterConfig.senderFontName = (String) e.getItem();
-				EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
-				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
+					EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
+					this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
+				}
 			}
 		});
 		layout.putConstraint(SpringLayout.NORTH, fontSelector, 0, SpringLayout.NORTH, panel);
@@ -77,6 +78,19 @@ public class JFontSettingsPanel extends JPanel {
 
 		final JComboBox<Integer> fontSizeSelector = new JComboBox<>(FONT_SIZES);
 		fontSizeSelector.setEditable(true);
+		fontSizeSelector.addItemListener(new PropertyItemListener() {
+			@Override
+			public void setProperties(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					if (name.equals("Reciever"))
+						EnvelopePrinterConfig.receiverFontSize = (Integer) e.getItem();
+					else if (name.equals("Sender"))
+						EnvelopePrinterConfig.senderFontSize = (Integer) e.getItem();
+					EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
+					this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
+				}
+			}
+		});
 		fontSizeSelector.setPreferredSize(new Dimension(50, 25));
 		layout.putConstraint(SpringLayout.NORTH, fontSizeSelector, 0, SpringLayout.NORTH, fontSelector);
 		layout.putConstraint(SpringLayout.WEST, fontSizeSelector, 5, SpringLayout.EAST, fontSelector);
