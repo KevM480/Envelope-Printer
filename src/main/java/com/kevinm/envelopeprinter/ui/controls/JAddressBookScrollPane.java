@@ -38,7 +38,6 @@ public class JAddressBookScrollPane extends JScrollPane {
 			}
 		};
 		addressTable.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
-
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				final JLabel label = new JLabel((String) value);

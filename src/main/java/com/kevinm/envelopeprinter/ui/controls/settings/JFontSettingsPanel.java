@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
@@ -20,6 +19,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import com.kevinm.envelopeprinter.EnvelopePrinter;
+import com.kevinm.envelopeprinter.components.ComponentHierarchy;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.properties.events.PropertyItemListener;
 import com.kevinm.envelopeprinter.ui.controls.JColorSelectorButton;
@@ -39,7 +39,11 @@ public class JFontSettingsPanel extends JPanel {
 		this.setBorder(titledBorder);
 
 		final JPanel recipientFontPanel = new JPanel();
+		recipientFontPanel.setName("recipient_font_panel");
+		this.add(recipientFontPanel);
 		final JPanel senderFontPanel = new JPanel();
+		senderFontPanel.setName("sender_font_panel");
+		this.add(senderFontPanel);
 		createFontSettingUI(recipientFontPanel, border, "Reciever");
 		createFontSettingUI(senderFontPanel, border, "Sender");
 		layout.putConstraint(SpringLayout.NORTH, recipientFontPanel, 0, SpringLayout.NORTH, this);
@@ -56,9 +60,9 @@ public class JFontSettingsPanel extends JPanel {
 		panel.setPreferredSize(new Dimension(200, 100));
 		panel.setLayout(layout);
 		panel.setBorder(panelBorder);
-		this.add(panel);
 
 		final JFontComboBox fontSelector = new JFontComboBox();
+		fontSelector.setName("font_name_selector");
 		fontSelector.setPreferredSize(new Dimension(120, 25));
 		fontSelector.addItemListener(new PropertyItemListener() {
 			@Override
@@ -67,9 +71,11 @@ public class JFontSettingsPanel extends JPanel {
 					EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
 				else if (name.equals("Sender"))
 					EnvelopePrinterConfig.senderFontName = (String) e.getItem();
-				EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
-				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
-
+				try {
+					System.out.println(ComponentHierarchy.top.get("split_pane").get("preview_pane"));
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		layout.putConstraint(SpringLayout.NORTH, fontSelector, 0, SpringLayout.NORTH, panel);
@@ -77,6 +83,7 @@ public class JFontSettingsPanel extends JPanel {
 		panel.add(fontSelector);
 
 		final JComboBox<Integer> fontSizeSelector = new JComboBox<>(FONT_SIZES);
+		fontSizeSelector.setName("font_size_selector");
 		fontSizeSelector.setEditable(true);
 		fontSizeSelector.addItemListener(new PropertyItemListener() {
 			@Override
@@ -86,7 +93,8 @@ public class JFontSettingsPanel extends JPanel {
 				else if (name.equals("Sender"))
 					EnvelopePrinterConfig.senderFontSize = (Integer) e.getItem();
 				EnvelopePrinterWindow window = EnvelopePrinter.getRoot();
-				this.repaintComponet(((JSplitPane) window.getComponentNamed("split_pane")).getBottomComponent());
+				// this.repaintComponet(((JSplitPane)
+				// window.getComponentNamed("split_pane")).getBottomComponent());
 
 			}
 		});
@@ -106,6 +114,7 @@ public class JFontSettingsPanel extends JPanel {
 		ImageIcon iconBold = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("assets/icons/bold.png"));
 		iconBold = new ImageIcon(iconBold.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 		final JToggleButton bold = new JToggleButton(iconBold);
+		bold.setName("bold_button");
 		layout.putConstraint(SpringLayout.NORTH, bold, 5, SpringLayout.SOUTH, fontSelector);
 		layout.putConstraint(SpringLayout.WEST, bold, 0, SpringLayout.WEST, fontSelector);
 		panel.add(bold);
@@ -113,6 +122,7 @@ public class JFontSettingsPanel extends JPanel {
 		ImageIcon iconItalic = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("assets/icons/italic.png"));
 		iconItalic = new ImageIcon(iconItalic.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 		final JToggleButton italic = new JToggleButton(iconItalic);
+		italic.setName("italic_button");
 		layout.putConstraint(SpringLayout.NORTH, italic, 5, SpringLayout.SOUTH, fontSelector);
 		layout.putConstraint(SpringLayout.WEST, italic, 2, SpringLayout.EAST, bold);
 		panel.add(italic);
@@ -120,11 +130,13 @@ public class JFontSettingsPanel extends JPanel {
 		ImageIcon iconUnderline = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("assets/icons/underline.png"));
 		iconUnderline = new ImageIcon(iconUnderline.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 		final JToggleButton underline = new JToggleButton(iconUnderline);
+		underline.setName("underline_button");
 		layout.putConstraint(SpringLayout.NORTH, underline, 5, SpringLayout.SOUTH, fontSelector);
 		layout.putConstraint(SpringLayout.WEST, underline, 2, SpringLayout.EAST, italic);
 		panel.add(underline);
 
 		JColorSelectorButton color = new JColorSelectorButton();
+		color.setName("color_selector_button");
 		color.setForeground(Color.BLACK);
 		color.addActionListener(new ActionListener() {
 			@Override

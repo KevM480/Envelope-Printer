@@ -1,10 +1,8 @@
 package com.kevinm.envelopeprinter.window;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -19,8 +17,6 @@ import com.kevinm.envelopeprinter.ui.controls.settings.JFontSettingsPanel;
 import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
 
 public class EnvelopePrinterWindow extends JFrame {
-
-	private static HashMap<String, Component> componentMap;
 
 	public EnvelopePrinterWindow() {
 		super("Envlope Printer");
@@ -38,19 +34,28 @@ public class EnvelopePrinterWindow extends JFrame {
 		this.setSize(width, height);
 
 		Container contentPane = this.getContentPane();
+		contentPane.setName("content");
 
 		final JFontSettingsPanel fontSettings = new JFontSettingsPanel();
+		fontSettings.setName("font_setting_panel");
 		final JPreviewSettingsPanel previewSettings = new JPreviewSettingsPanel();
-		final JAddressBookScrollPane addressPane = new JAddressBookScrollPane();
+		previewSettings.setName("preview_setting_panel");
 		final JAddresseeFormPanel formPanel = new JAddresseeFormPanel();
+		formPanel.setName("form_panel");
+
+		contentPane.add(fontSettings);
+		contentPane.add(previewSettings);
+		contentPane.add(formPanel);
+
+		final JAddressBookScrollPane addressPane = new JAddressBookScrollPane();
+		addressPane.setName("address_book_pane");
 		final JPreviewScrollPane previewPane = new JPreviewScrollPane();
+		previewPane.setName("preview_pane");
 		final JSplitPane splitPane = new JSplitPane(SwingConstants.HORIZONTAL, addressPane, previewPane);
-		splitPane.setDividerLocation(0.5);
-		this.addComponent("font_setting_panel", fontSettings);
-		this.addComponent("preview_setting_panel", previewSettings);
-		this.addComponent("form_panel", formPanel);
-		this.addComponent("split_pane", splitPane);
-		this.createComponentMap();
+		splitPane.setName("split_pane");
+
+		contentPane.add(splitPane);
+
 		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
 
@@ -67,24 +72,6 @@ public class EnvelopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.SOUTH, splitPane, -3, SpringLayout.SOUTH, contentPane);
 
 		this.setVisible(true);
-	}
-
-	private void addComponent(String name, Component component) {
-		Container contentPane = this.getContentPane();
-		component.setName(name);
-		contentPane.add(component);
-	}
-
-	private void createComponentMap() {
-		componentMap = new HashMap<String, Component>();
-		for (Component component : this.getContentPane().getComponents())
-			componentMap.put(component.getName(), component);
-	}
-
-	public Component getComponentNamed(String name) {
-		if (!componentMap.containsKey(name))
-			return null;
-		return componentMap.get(name);
 	}
 
 }

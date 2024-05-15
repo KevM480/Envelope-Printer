@@ -3,19 +3,21 @@ package com.kevinm.envelopeprinter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JSplitPane;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.kevinm.envelopeprinter.components.ComponentHierarchy;
+import com.kevinm.envelopeprinter.components.ComponentsHandler;
 import com.kevinm.envelopeprinter.properties.ConfigPropertiesHandler;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
-import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
 import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class EnvelopePrinter {
 
 	private static ConfigPropertiesHandler configPropertiesHandler;
+	private static ComponentsHandler componentsHandler;
 	private static EnvelopePrinterWindow root;
 	private static boolean startFlag;
 
@@ -23,17 +25,9 @@ public class EnvelopePrinter {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					FlatIntelliJLaf.setup();
-					UIManager.put("ScrollBar.showButtons", true);
-					UIManager.put("ScrollBar.width", 16);
-				} catch (Exception ignored) {
-				}
-				EnvelopePrinter envelopePrinter = new EnvelopePrinter();
-				EnvelopePrinterConfig printerConfig = new EnvelopePrinterConfig();
-				configPropertiesHandler = new ConfigPropertiesHandler(printerConfig);
-				envelopePrinter.preInit();
+				preInit();
 				root = new EnvelopePrinterWindow();
+				postInit();
 
 				/*
 				 * PrintService service = PrintServiceLookup.lookupDefaultPrintService(); Media
@@ -44,7 +38,6 @@ public class EnvelopePrinter {
 				 * s.getSize(MediaSize.INCH)[1] + " " + d); } }
 				 */
 
-				envelopePrinter.postInit();
 			}
 		});
 
@@ -68,6 +61,10 @@ public class EnvelopePrinter {
 		return root;
 	}
 
+	public static ComponentsHandler getComponentHandler() {
+		return componentsHandler;
+	}
+
 	/**
 	 * Returns whether or not the Window has finished building.
 	 * 
@@ -86,7 +83,14 @@ public class EnvelopePrinter {
 	/**
 	 * Runs before creating the JFrame window
 	 */
-	private void preInit() {
+	private static void preInit() {
+		try {
+			FlatIntelliJLaf.setup();
+			UIManager.put("ScrollBar.showButtons", true);
+			UIManager.put("ScrollBar.width", 16);
+		} catch (Exception ignored) {
+		}
+		configPropertiesHandler = new ConfigPropertiesHandler(new EnvelopePrinterConfig());
 		configPropertiesHandler.loadProperties();
 		startFlag = true;
 	}
@@ -94,12 +98,15 @@ public class EnvelopePrinter {
 	/**
 	 * Runs after creating the JFrame window
 	 */
-	private void postInit() {
+	private static void postInit() {
+		componentsHandler = new ComponentsHandler((JComponent) root.getContentPane());
+		ComponentHierarchy.top = componentsHandler.getTop();
 		startFlag = false;
 
-		JSplitPane splitPane = (JSplitPane) root.getComponentNamed("split_pane");
-		JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
-		scroll.centerViewport();
-		scroll.grabFocus();
+		// JSplitPane splitPane = (JSplitPane) root.getComponentNamed("split_pane");
+		// JPreviewScrollPane scroll = (JPreviewScrollPane)
+		// splitPane.getBottomComponent();
+		// scroll.centerViewport();
+		// scroll.grabFocus();
 	}
 }
