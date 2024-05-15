@@ -72,7 +72,7 @@ public class JFontSettingsPanel extends JPanel {
 				else if (name.equals("Sender"))
 					EnvelopePrinterConfig.senderFontName = (String) e.getItem();
 				try {
-					System.out.println(ComponentHierarchy.top.get("split_pane").get("preview_pane"));
+					System.out.println(ComponentHierarchy.get().get("split_pane").get("preview_pane"));
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

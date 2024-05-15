@@ -12,6 +12,7 @@ import com.kevinm.envelopeprinter.components.ComponentHierarchy;
 import com.kevinm.envelopeprinter.components.ComponentsHandler;
 import com.kevinm.envelopeprinter.properties.ConfigPropertiesHandler;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
+import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
 import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class EnvelopePrinter {
@@ -100,9 +101,16 @@ public class EnvelopePrinter {
 	 */
 	private static void postInit() {
 		componentsHandler = new ComponentsHandler((JComponent) root.getContentPane());
-		ComponentHierarchy.top = componentsHandler.getTop();
 		startFlag = false;
 
+		try {
+			JPreviewScrollPane scroll = (JPreviewScrollPane) ComponentHierarchy.get().get("split_pane").get("preview_pane").getComponent();
+			scroll.centerViewport(true);
+			scroll.grabFocus();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// JSplitPane splitPane = (JSplitPane) root.getComponentNamed("split_pane");
 		// JPreviewScrollPane scroll = (JPreviewScrollPane)
 		// splitPane.getBottomComponent();

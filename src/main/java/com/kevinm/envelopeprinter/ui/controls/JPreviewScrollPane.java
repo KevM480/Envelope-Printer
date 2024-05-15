@@ -27,15 +27,14 @@ public class JPreviewScrollPane extends JScrollPane {
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
 		final JEnvelopePreviewPanel previewPanel = new JEnvelopePreviewPanel();
+		previewPanel.setName("preview_panel");
 		previewPanel.modifyZoom();
 		this.setViewportView(previewPanel);
 		this.setAutoscrolls(true);
 	}
 
-	public void centerViewport() {
-		if (this.getViewport().getComponent(0) instanceof JEnvelopePreviewPanel previewPanel) {
-			previewPanel.centerZoom();
-		}
+	public void centerViewport(boolean forceResize) {
+		((JEnvelopePreviewPanel) this.getViewport().getView()).centerZoom(forceResize);
 	}
 
 	private class JEnvelopePreviewPanel extends JPanel {
@@ -133,13 +132,15 @@ public class JPreviewScrollPane extends JScrollPane {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_R)
-						JEnvelopePreviewPanel.this.centerZoom();
+						JEnvelopePreviewPanel.this.centerZoom(false);
 				}
 			});
 			this.setFocusable(true);
 		}
 
-		private void centerZoom() {
+		private void centerZoom(boolean forceResize) {
+			if (forceResize)
+				this.setDefualtZoom();
 			this.repaint();
 			this.revalidate();
 			JViewport viewport = JPreviewScrollPane.this.getViewport();

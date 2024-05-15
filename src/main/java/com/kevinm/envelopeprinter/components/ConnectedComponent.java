@@ -16,6 +16,10 @@ public class ConnectedComponent {
 		children.put(component.getName(), component);
 	}
 
+	protected void setComponent(JComponent component) {
+		this.component = component;
+	}
+
 	public String getName() {
 		return component.getName();
 	}
