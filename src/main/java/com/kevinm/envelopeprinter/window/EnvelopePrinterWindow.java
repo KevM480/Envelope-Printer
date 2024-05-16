@@ -33,6 +33,11 @@ public class EnvelopePrinterWindow extends JFrame {
 		height = (int) screenSize.getHeight();
 		this.setSize(width, height);
 
+		this.setVisible(true);
+	}
+
+	public void createComponents() {
+
 		Container contentPane = this.getContentPane();
 		contentPane.setName("content");
 
@@ -55,7 +60,7 @@ public class EnvelopePrinterWindow extends JFrame {
 		splitPane.setName("split_pane");
 
 		contentPane.add(splitPane);
-
+		SpringLayout layout = (SpringLayout) contentPane.getLayout();
 		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
 
@@ -70,8 +75,7 @@ public class EnvelopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.WEST, splitPane, 3, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.EAST, splitPane, -3, SpringLayout.WEST, formPanel);
 		layout.putConstraint(SpringLayout.SOUTH, splitPane, -3, SpringLayout.SOUTH, contentPane);
-
-		this.setVisible(true);
+		contentPane.revalidate();
 	}
 
 }

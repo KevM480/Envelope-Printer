@@ -17,14 +17,15 @@ import javax.swing.table.TableColumnModel;
 public class JAddressBookScrollPane extends JScrollPane {
 	public JAddressBookScrollPane() {
 		super(createTable());
-		this.setMinimumSize(new Dimension(0, 100));
+		this.setMinimumSize(new Dimension(100, 100));
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+		this.setVisible(true);
 	}
 
 	private static JTable createTable() {
-		String columNames[] = { "Addressee", "Address", "City", "State", "Zip Code" };
+		String columNames[] = { "Recipient", "Address", "City", "State", "Zip Code" };
 		DefaultTableModel tableModel = new DefaultTableModel(columNames, 100);
 		final JTable addressTable = new JTable(tableModel) {
 			@Override

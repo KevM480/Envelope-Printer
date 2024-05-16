@@ -3,22 +3,19 @@ package com.kevinm.envelopeprinter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JComponent;
+import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.kevinm.envelopeprinter.components.ComponentHierarchy;
-import com.kevinm.envelopeprinter.components.ComponentsHandler;
+import com.kevinm.envelopeprinter.components.ComponentMap;
 import com.kevinm.envelopeprinter.properties.ConfigPropertiesHandler;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
-import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
 import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class EnvelopePrinter {
 
 	private static ConfigPropertiesHandler configPropertiesHandler;
-	private static ComponentsHandler componentsHandler;
 	private static EnvelopePrinterWindow root;
 	private static boolean startFlag;
 
@@ -28,6 +25,8 @@ public class EnvelopePrinter {
 			public void run() {
 				preInit();
 				root = new EnvelopePrinterWindow();
+				ComponentMap.setRoot(root.getContentPane());
+				root.createComponents();
 				postInit();
 
 				/*
@@ -60,10 +59,6 @@ public class EnvelopePrinter {
 
 	public static EnvelopePrinterWindow getRoot() {
 		return root;
-	}
-
-	public static ComponentsHandler getComponentHandler() {
-		return componentsHandler;
 	}
 
 	/**
@@ -100,17 +95,8 @@ public class EnvelopePrinter {
 	 * Runs after creating the JFrame window
 	 */
 	private static void postInit() {
-		componentsHandler = new ComponentsHandler((JComponent) root.getContentPane());
 		startFlag = false;
-
-		try {
-			JPreviewScrollPane scroll = (JPreviewScrollPane) ComponentHierarchy.get().get("split_pane").get("preview_pane").getComponent();
-			scroll.centerViewport(true);
-			scroll.grabFocus();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println(ComponentMap.getRoot().get(JSplitPane.class, "split_pane"));
 		// JSplitPane splitPane = (JSplitPane) root.getComponentNamed("split_pane");
 		// JPreviewScrollPane scroll = (JPreviewScrollPane)
 		// splitPane.getBottomComponent();

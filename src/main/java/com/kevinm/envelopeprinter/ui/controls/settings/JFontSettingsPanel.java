@@ -19,7 +19,6 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import com.kevinm.envelopeprinter.EnvelopePrinter;
-import com.kevinm.envelopeprinter.components.ComponentHierarchy;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.properties.events.PropertyItemListener;
 import com.kevinm.envelopeprinter.ui.controls.JColorSelectorButton;
@@ -71,11 +70,7 @@ public class JFontSettingsPanel extends JPanel {
 					EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
 				else if (name.equals("Sender"))
 					EnvelopePrinterConfig.senderFontName = (String) e.getItem();
-				try {
-					System.out.println(ComponentHierarchy.get().get("split_pane").get("preview_pane"));
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+
 			}
 		});
 		layout.putConstraint(SpringLayout.NORTH, fontSelector, 0, SpringLayout.NORTH, panel);
