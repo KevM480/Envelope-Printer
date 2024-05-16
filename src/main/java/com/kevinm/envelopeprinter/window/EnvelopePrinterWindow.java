@@ -56,10 +56,13 @@ public class EnvelopePrinterWindow extends JFrame {
 		addressPane.setName("address_book_pane");
 		final JPreviewScrollPane previewPane = new JPreviewScrollPane();
 		previewPane.setName("preview_pane");
-		final JSplitPane splitPane = new JSplitPane(SwingConstants.HORIZONTAL, addressPane, previewPane);
-		splitPane.setName("split_pane");
+		final JSplitPane splitPaneHorizontal = new JSplitPane(SwingConstants.HORIZONTAL, addressPane, previewPane);
+		splitPaneHorizontal.setName("split_pane_horizontal");
+		splitPaneHorizontal.setPreferredSize(new Dimension(this.getWidth() - 300, 0));
+		final JSplitPane splitPaneVertical = new JSplitPane(SwingConstants.VERTICAL, splitPaneHorizontal, formPanel);
+		splitPaneVertical.setName("split_pane_vertical");
+		contentPane.add(splitPaneVertical);
 
-		contentPane.add(splitPane);
 		SpringLayout layout = (SpringLayout) contentPane.getLayout();
 		layout.putConstraint(SpringLayout.WEST, fontSettings, 0, SpringLayout.WEST, contentPane);
 		layout.putConstraint(SpringLayout.NORTH, fontSettings, 0, SpringLayout.NORTH, contentPane);
@@ -71,10 +74,10 @@ public class EnvelopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.EAST, formPanel, -3, SpringLayout.EAST, contentPane);
 		layout.putConstraint(SpringLayout.SOUTH, formPanel, -3, SpringLayout.SOUTH, contentPane);
 
-		layout.putConstraint(SpringLayout.NORTH, splitPane, 0, SpringLayout.SOUTH, fontSettings);
-		layout.putConstraint(SpringLayout.WEST, splitPane, 3, SpringLayout.WEST, contentPane);
-		layout.putConstraint(SpringLayout.EAST, splitPane, -3, SpringLayout.WEST, formPanel);
-		layout.putConstraint(SpringLayout.SOUTH, splitPane, -3, SpringLayout.SOUTH, contentPane);
+		layout.putConstraint(SpringLayout.NORTH, splitPaneVertical, 0, SpringLayout.SOUTH, fontSettings);
+		layout.putConstraint(SpringLayout.WEST, splitPaneVertical, 3, SpringLayout.WEST, contentPane);
+		layout.putConstraint(SpringLayout.EAST, splitPaneVertical, -3, SpringLayout.EAST, contentPane);
+		layout.putConstraint(SpringLayout.SOUTH, splitPaneVertical, -3, SpringLayout.SOUTH, contentPane);
 		contentPane.revalidate();
 	}
 
