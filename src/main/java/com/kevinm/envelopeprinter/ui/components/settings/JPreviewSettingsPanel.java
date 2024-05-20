@@ -1,4 +1,4 @@
-package com.kevinm.envelopeprinter.ui.controls.settings;
+package com.kevinm.envelopeprinter.ui.components.settings;
 
 import java.awt.Dimension;
 
@@ -8,7 +8,7 @@ import javax.swing.SpringLayout;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import com.kevinm.envelopeprinter.ui.controls.JShowPreviewCheckBox;
+import com.kevinm.envelopeprinter.ui.components.JShowPreviewCheckBox;
 
 public class JPreviewSettingsPanel extends JPanel {
 	public JPreviewSettingsPanel() {

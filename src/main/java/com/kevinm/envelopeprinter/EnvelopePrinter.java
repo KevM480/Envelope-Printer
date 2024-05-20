@@ -11,6 +11,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.kevinm.envelopeprinter.components.ComponentMap;
 import com.kevinm.envelopeprinter.properties.ConfigPropertiesHandler;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
+import com.kevinm.envelopeprinter.ui.components.JPreviewScrollPane;
 import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class EnvelopePrinter {
@@ -96,11 +97,9 @@ public class EnvelopePrinter {
 	 */
 	private static void postInit() {
 		startFlag = false;
-		System.out.println(ComponentMap.getRoot().get(JSplitPane.class, "split_pane"));
-		// JSplitPane splitPane = (JSplitPane) root.getComponentNamed("split_pane");
-		// JPreviewScrollPane scroll = (JPreviewScrollPane)
-		// splitPane.getBottomComponent();
-		// scroll.centerViewport();
-		// scroll.grabFocus();
+		JSplitPane splitPane = ComponentMap.getRoot().get(JSplitPane.class, "split_pane_vertical.split_pane_horizontal");
+		JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
+		scroll.centerViewport(true);
+		scroll.grabFocus();
 	}
 }

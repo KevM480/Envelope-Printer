@@ -1,4 +1,4 @@
-package com.kevinm.envelopeprinter.ui.controls.settings;
+package com.kevinm.envelopeprinter.ui.components.settings;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,8 +21,8 @@ import javax.swing.border.TitledBorder;
 import com.kevinm.envelopeprinter.EnvelopePrinter;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.properties.events.PropertyItemListener;
-import com.kevinm.envelopeprinter.ui.controls.JColorSelectorButton;
-import com.kevinm.envelopeprinter.ui.controls.JFontComboBox;
+import com.kevinm.envelopeprinter.ui.components.JColorSelectorButton;
+import com.kevinm.envelopeprinter.ui.components.JFontComboBox;
 import com.kevinm.envelopeprinter.window.EnvelopePrinterWindow;
 
 public class JFontSettingsPanel extends JPanel {

@@ -9,12 +9,12 @@ import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import com.kevinm.envelopeprinter.ui.controls.JAddressBookScrollPane;
-import com.kevinm.envelopeprinter.ui.controls.JAddresseeFormPanel;
-import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
-import com.kevinm.envelopeprinter.ui.controls.JTopMenuBar;
-import com.kevinm.envelopeprinter.ui.controls.settings.JFontSettingsPanel;
-import com.kevinm.envelopeprinter.ui.controls.settings.JPreviewSettingsPanel;
+import com.kevinm.envelopeprinter.ui.components.JAddressBookScrollPane;
+import com.kevinm.envelopeprinter.ui.components.JAddresseeFormPanel;
+import com.kevinm.envelopeprinter.ui.components.JPreviewScrollPane;
+import com.kevinm.envelopeprinter.ui.components.JTopMenuBar;
+import com.kevinm.envelopeprinter.ui.components.settings.JFontSettingsPanel;
+import com.kevinm.envelopeprinter.ui.components.settings.JPreviewSettingsPanel;
 
 public class EnvelopePrinterWindow extends JFrame {
 
@@ -33,7 +33,6 @@ public class EnvelopePrinterWindow extends JFrame {
 		height = (int) screenSize.getHeight();
 		this.setSize(width, height);
 
-		this.setVisible(true);
 	}
 
 	public void createComponents() {
@@ -58,8 +57,8 @@ public class EnvelopePrinterWindow extends JFrame {
 		previewPane.setName("preview_pane");
 		final JSplitPane splitPaneHorizontal = new JSplitPane(SwingConstants.HORIZONTAL, addressPane, previewPane);
 		splitPaneHorizontal.setName("split_pane_horizontal");
-		splitPaneHorizontal.setPreferredSize(new Dimension(this.getWidth() - 300, 0));
 		final JSplitPane splitPaneVertical = new JSplitPane(SwingConstants.VERTICAL, splitPaneHorizontal, formPanel);
+		splitPaneVertical.setDividerLocation(this.getWidth() - 300);
 		splitPaneVertical.setName("split_pane_vertical");
 		contentPane.add(splitPaneVertical);
 
@@ -79,6 +78,7 @@ public class EnvelopePrinterWindow extends JFrame {
 		layout.putConstraint(SpringLayout.EAST, splitPaneVertical, -3, SpringLayout.EAST, contentPane);
 		layout.putConstraint(SpringLayout.SOUTH, splitPaneVertical, -3, SpringLayout.SOUTH, contentPane);
 		contentPane.revalidate();
+		this.setVisible(true);
 	}
 
 }

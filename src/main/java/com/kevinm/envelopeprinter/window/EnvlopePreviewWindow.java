@@ -4,7 +4,7 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
-import com.kevinm.envelopeprinter.ui.controls.JPreviewScrollPane;
+import com.kevinm.envelopeprinter.ui.components.JPreviewScrollPane;
 
 public class EnvlopePreviewWindow extends JFrame {
 

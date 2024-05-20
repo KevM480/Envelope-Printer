@@ -33,7 +33,7 @@ public class ComponentMap {
 	public <T extends JComponent> T get(Class<T> type, String path) {
 		String[] names = new String[] { path };
 		if (path.contains("."))
-			names = path.split(".");
+			names = path.split("\\.");
 		JComponent parent = this.parent;
 		for (int i = 0; i < names.length; i++) {
 			parent = get(parent, names[i]);
@@ -46,7 +46,7 @@ public class ComponentMap {
 
 	private JComponent get(JComponent parent, String name) {
 		for (Component comp : parent.getComponents()) {
-			if (comp.getName().equals(name))
+			if (comp.getName() != null && comp.getName().equals(name))
 				return (JComponent) comp;
 		}
 		return null;

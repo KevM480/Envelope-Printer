@@ -1,4 +1,4 @@
-package com.kevinm.envelopeprinter.ui.controls;
+package com.kevinm.envelopeprinter.ui.components;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

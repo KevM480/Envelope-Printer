@@ -1,4 +1,4 @@
-package com.kevinm.envelopeprinter.ui.controls;
+package com.kevinm.envelopeprinter.ui.components;
 
 import java.awt.Color;
 import java.awt.Component;
