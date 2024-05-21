@@ -16,7 +16,6 @@ public class JFontComboBox extends JComboBox<String> {
 		this.setRenderer(new FontComboBoxRenderer());
 		this.setEditable(true);
 		AutoCompleteDocument.addDocumentTo(this);
-
 	}
 
 	private static class FontComboBoxRenderer extends BasicComboBoxRenderer {
