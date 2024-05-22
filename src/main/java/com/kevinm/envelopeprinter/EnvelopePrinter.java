@@ -29,7 +29,6 @@ public class EnvelopePrinter {
 				ComponentMap.setRoot(root.getContentPane());
 				root.createComponents();
 				postInit();
-
 				/*
 				 * PrintService service = PrintServiceLookup.lookupDefaultPrintService(); Media
 				 * med[] = (Media[]) service.getSupportedAttributeValues(Media.class, null,

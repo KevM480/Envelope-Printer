@@ -10,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -21,6 +23,7 @@ public class JAddressBookScrollPane extends JScrollPane {
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		this.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+
 		this.setVisible(true);
 	}
 
@@ -38,6 +41,13 @@ public class JAddressBookScrollPane extends JScrollPane {
 				return getPreferredSize().width < getParent().getWidth();
 			}
 		};
+		addressTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				System.out.println(addressTable.getSelectedRow());
+			}
+		});
 		addressTable.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

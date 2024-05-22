@@ -6,9 +6,9 @@ import javax.swing.JFrame;
 
 import com.kevinm.envelopeprinter.ui.components.JPreviewScrollPane;
 
-public class EnvlopePreviewWindow extends JFrame {
+public class EnvelopePreviewWindow extends JFrame {
 
-	public EnvlopePreviewWindow() {
+	public EnvelopePreviewWindow() {
 		Container contentPane = this.getContentPane();
 		final JPreviewScrollPane previewPanel = new JPreviewScrollPane();
 		contentPane.add(previewPanel);
