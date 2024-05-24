@@ -5,7 +5,7 @@ import java.awt.Container;
 
 import javax.swing.JComponent;
 
-public class ComponentMapUtils {
+public class ComponentFinderUtils {
 
 	private static Container root;
 
@@ -14,7 +14,7 @@ public class ComponentMapUtils {
 	 * start.
 	 */
 	public static void setRoot(Container root) {
-		ComponentMapUtils.root = root;
+		ComponentFinderUtils.root = root;
 	}
 
 	public static <T extends JComponent> T get(Class<T> type, String path) {
@@ -30,7 +30,6 @@ public class ComponentMapUtils {
 			if (parent == null)
 				return null;
 		}
-
 		return type.cast(parent);
 	}
 

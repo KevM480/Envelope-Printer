@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import com.kevinm.envelopeprinter.components.ComponentMapUtils;
+import com.kevinm.envelopeprinter.components.ComponentFinderUtils;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.properties.events.PropertyItemListener;
 import com.kevinm.envelopeprinter.ui.components.JColorSelectorButton;
@@ -70,7 +70,7 @@ public class JFontSettingsPanel extends JPanel {
 					EnvelopePrinterConfig.receiverFontName = (String) e.getItem();
 				else if (name.equals("Sender"))
 					EnvelopePrinterConfig.senderFontName = (String) e.getItem();
-				ComponentMapUtils.get(JPreviewScrollPane.class, "split_pane_vertical.split_pane_horizontal.preview_pane").repaint();
+				ComponentFinderUtils.get(JPreviewScrollPane.class, "split_pane_vertical.split_pane_horizontal.preview_pane").repaint();
 
 			}
 		});
@@ -88,7 +88,7 @@ public class JFontSettingsPanel extends JPanel {
 					EnvelopePrinterConfig.receiverFontSize = (Integer) e.getItem();
 				else if (name.equals("Sender"))
 					EnvelopePrinterConfig.senderFontSize = (Integer) e.getItem();
-				ComponentMapUtils.get(JPreviewScrollPane.class, "split_pane_vertical.split_pane_horizontal.preview_pane").repaint();
+				ComponentFinderUtils.get(JPreviewScrollPane.class, "split_pane_vertical.split_pane_horizontal.preview_pane").repaint();
 			}
 		});
 		fontSizeSelector.setPreferredSize(new Dimension(50, 25));
