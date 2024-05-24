@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.kevinm.envelopeprinter.components.ComponentMap;
+import com.kevinm.envelopeprinter.components.ComponentMapUtils;
 import com.kevinm.envelopeprinter.properties.ConfigPropertiesHandler;
 import com.kevinm.envelopeprinter.properties.EnvelopePrinterConfig;
 import com.kevinm.envelopeprinter.ui.components.JPreviewScrollPane;
@@ -26,7 +26,7 @@ public class EnvelopePrinter {
 			public void run() {
 				preInit();
 				root = new EnvelopePrinterWindow();
-				ComponentMap.setRoot(root.getContentPane());
+				ComponentMapUtils.setRoot(root.getContentPane());
 				root.createComponents();
 				postInit();
 				/*
@@ -96,7 +96,7 @@ public class EnvelopePrinter {
 	 */
 	private static void postInit() {
 		startFlag = false;
-		JSplitPane splitPane = ComponentMap.getRoot().get(JSplitPane.class, "split_pane_vertical.split_pane_horizontal");
+		JSplitPane splitPane = ComponentMapUtils.get(JSplitPane.class, "split_pane_vertical.split_pane_horizontal");
 		JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
 		scroll.centerViewport(true);
 		scroll.grabFocus();
