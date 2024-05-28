@@ -33,6 +33,10 @@ public class JAddresseeFormPanel extends JPanel {
 		firstName.setName("first_name");
 		recipientPanel.add(firstName);
 
+		final JLabeledTextField middleName = new JLabeledTextField("Middle Name: ", 10);
+		firstName.setName("middle_name");
+		recipientPanel.add(middleName);
+
 		final JLabeledTextField lastName = new JLabeledTextField("Last Name: ", 10);
 		lastName.setName("last_name");
 		recipientPanel.add(lastName);

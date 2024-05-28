@@ -37,7 +37,6 @@ public class JStatesComboBox extends JComboBox<String> {
 
 			oldTime = Instant.now();
 			pattern += ("" + aKey).toLowerCase();
-			System.out.println(pattern);
 			if (pattern.length() <= 2)
 				for (int i = 0; i < aModel.getSize(); i++) {
 					Object elem = aModel.getElementAt(i);
