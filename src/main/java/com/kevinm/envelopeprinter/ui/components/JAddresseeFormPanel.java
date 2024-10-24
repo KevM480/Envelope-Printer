@@ -24,6 +24,7 @@ public class JAddresseeFormPanel extends JPanel {
 
 		WrapLayout layout = new WrapLayout(FlowLayout.LEADING);
 		final JPanel recipientPanel = new JPanel();
+		recipientPanel.setName("recipient_panel");
 		Border border = BorderFactory.createLineBorder(getForeground());
 		TitledBorder recipientTitledBorder = new TitledBorder(border, "Recipient", TitledBorder.LEFT, TitledBorder.TOP);
 		recipientPanel.setBorder(recipientTitledBorder);
@@ -34,7 +35,7 @@ public class JAddresseeFormPanel extends JPanel {
 		recipientPanel.add(firstName);
 
 		final JLabeledTextField middleName = new JLabeledTextField("Middle Name: ", 10);
-		firstName.setName("middle_name");
+		middleName.setName("middle_name");
 		recipientPanel.add(middleName);
 
 		final JLabeledTextField lastName = new JLabeledTextField("Last Name: ", 10);
@@ -48,6 +49,7 @@ public class JAddresseeFormPanel extends JPanel {
 		recipientPanel.setLayout(layout);
 
 		final JPanel addressPanel = new JPanel();
+		addressPanel.setName("address_panel");
 		TitledBorder addressTitledBorder = new TitledBorder(border, "Address", TitledBorder.LEFT, TitledBorder.TOP);
 		addressPanel.setBorder(addressTitledBorder);
 		this.add(addressPanel);
@@ -66,6 +68,7 @@ public class JAddresseeFormPanel extends JPanel {
 		final JLabeledTextField zip = new JLabeledTextField("Zip Code: ", 6);
 		zip.setName("zip");
 		addressPanel.add(zip);
+
 		addressPanel.setLayout(layout);
 
 		springLayout.putConstraint(SpringLayout.NORTH, recipientPanel, 0, SpringLayout.NORTH, this);
@@ -80,15 +83,18 @@ public class JAddresseeFormPanel extends JPanel {
 	}
 
 	public class JLabeledTextField extends JPanel {
-
 		public JLabeledTextField(String title, int columns) {
+			this(title, "entry", columns);
+		}
+
+		public JLabeledTextField(String title, String name, int columns) {
 			super();
 			BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
 			this.setLayout(layout);
 			final JLabel label = new JLabel(title);
 			label.setName("title");
 			final JTextField field = new JTextField(columns);
-			field.setName("text_field");
+			field.setName(name);
 			this.add(label);
 			this.add(field);
 		}
@@ -97,13 +103,17 @@ public class JAddresseeFormPanel extends JPanel {
 	public class JLabeledStateComboBox extends JPanel {
 
 		public JLabeledStateComboBox() {
+			this("entry");
+		}
+
+		public JLabeledStateComboBox(String name) {
 			super();
 			BoxLayout layout = new BoxLayout(this, BoxLayout.X_AXIS);
 			this.setLayout(layout);
 			final JLabel label = new JLabel("State: ");
 			label.setName("title");
 			final JStatesComboBox state = new JStatesComboBox();
-			state.setName("state_box");
+			state.setName(name);
 			this.add(label);
 			this.add(state);
 		}

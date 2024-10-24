@@ -2,12 +2,15 @@ package com.kevinm.envelopeprinter.components;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.util.HashMap;
 
 import javax.swing.JComponent;
 
 public class ComponentFinderUtils {
 
 	private static Container root;
+
+	private static HashMap<String, Container> componentCache = new HashMap<>();
 
 	/**
 	 * Do not use this method. It is only to be used to set the root component at
@@ -34,10 +37,10 @@ public class ComponentFinderUtils {
 	}
 
 	private static JComponent get(JComponent parent, String name) {
-		for (Component comp : parent.getComponents()) {
+		for (Component comp : parent.getComponents())
 			if (comp.getName() != null && comp.getName().equals(name))
 				return (JComponent) comp;
-		}
+
 		return null;
 	}
 

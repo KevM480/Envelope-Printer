@@ -46,10 +46,8 @@ public class EnvelopePrinterWindow extends JFrame {
 		previewSettings.setName("preview_setting_panel");
 		final JAddresseeFormPanel formPanel = new JAddresseeFormPanel();
 		formPanel.setName("form_panel");
-
 		contentPane.add(fontSettings);
 		contentPane.add(previewSettings);
-		contentPane.add(formPanel);
 
 		final JAddressBookScrollPane addressPane = new JAddressBookScrollPane();
 		addressPane.setName("address_book_pane");

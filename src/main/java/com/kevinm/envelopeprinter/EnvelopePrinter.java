@@ -100,5 +100,6 @@ public class EnvelopePrinter {
 		JPreviewScrollPane scroll = (JPreviewScrollPane) splitPane.getBottomComponent();
 		scroll.centerViewport(true);
 		scroll.grabFocus();
+
 	}
 }

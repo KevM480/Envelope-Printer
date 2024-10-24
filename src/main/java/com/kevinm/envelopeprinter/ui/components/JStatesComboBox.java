@@ -14,7 +14,7 @@ import javax.swing.JComboBox;
 public class JStatesComboBox extends JComboBox<String> {
 	public JStatesComboBox() {
 		super(getStates().toArray(new String[] {}));
-		this.setKeySelectionManager(new NextKeySelectionManager());
+		// this.setKeySelectionManager(new NextKeySelectionManager());
 	}
 
 	private static List<String> getStates() {
@@ -32,7 +32,7 @@ public class JStatesComboBox extends JComboBox<String> {
 
 		public int selectionForKey(char aKey, ComboBoxModel<?> aModel) {
 
-			if (oldTime != null && Duration.between(oldTime, Instant.now()).toSeconds() >= Duration.ofSeconds(2).toSeconds())
+			if (oldTime != null && (pattern.length() > 2 || Duration.between(oldTime, Instant.now()).toSeconds() >= Duration.ofSeconds(2).toSeconds()))
 				pattern = "";
 
 			oldTime = Instant.now();
@@ -46,16 +46,6 @@ public class JStatesComboBox extends JComboBox<String> {
 							return i;
 					}
 				}
-
-			for (int i = 0; i < aModel.getSize(); i++) {
-				Object elem = aModel.getElementAt(i);
-				if (elem != null && elem.toString() != null) {
-					String v = elem.toString().toLowerCase();
-					if (pattern.contains(v.substring(0, pattern.length())))
-						return i;
-				}
-			}
-			pattern = "";
 			return -1;
 		}
 	}
